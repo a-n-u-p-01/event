@@ -23,11 +23,11 @@ function Navbar() {
   }, []); 
 
   return (
-    <nav className="w-full z-10 h-20 bg-red-500 drop-shadow-md text-black flex justify-between pt-4 pl-5 pr-5 fixed">
+    <nav className="w-full z-10 h-20  text-black flex justify-between pt-4 pl-5 pr-5 fixed">
       <div className="flex gap-5">
         <button
           onClick={handleGoHome}
-          className="flex items-center justify-center gap-3 p-[13px] text-white font-bold text-2xl"
+          className="flex items-center justify-center gap-3 p-[13px] text-black font-bold text-2xl"
         >
           Event
         </button>

@@ -7,16 +7,19 @@ function Searchbar() {
 
   const handleSearch = (event) => {
     event.preventDefault(); // Prevent the default form submission behavior
-    if (query.trim()) {
+    if (query) {
       // Navigate to the /events page with the query parameter
       navigate(`/events?search=${encodeURIComponent(query)}`);
+    }
+    else{
+      navigate(`/events`);
     }
   };
 
   return (
     <form
       onSubmit={handleSearch}
-      className="flex items-center max-w-sm mx-auto"
+      className="flex items-center max-w-sm mx-auto "
     >
       <label htmlFor="simple-search" className="sr-only">
         Search
@@ -71,9 +74,9 @@ function Searchbar() {
           id="simple-search"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          className="w-[20rem] h-9 bg-red-50 text-gray-900 font-normal rounded-3xl border-none block ps-10 p-2.5 focus:outline-none focus:bg-white focus:ring-2 focus:ring-red-600"
+          className="w-[20rem] h-9 bg-red-50 border-red-700 text-gray-900 font-normal rounded-3xl border-none block ps-10 p-2.5 focus:outline-none focus:bg-white focus:ring-2 focus:ring-red-600"
           placeholder="Search Events"
-          required
+          
         />
       </div>
       <button

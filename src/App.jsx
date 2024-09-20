@@ -11,7 +11,7 @@ import Footer from "./componets/Layout/Footer";
 import EventDiscovery from "./componets/EventDiscovery/EventDiscovery";
 import Home from "./componets/Home/Home";
 import Register from "./componets/Auth/Register";
-import Login from "./componets/auth/Login";
+import Login from "./componets/Auth/Login";
 import Dashboard from "./componets/Dashboard/Dashboard";
 
 

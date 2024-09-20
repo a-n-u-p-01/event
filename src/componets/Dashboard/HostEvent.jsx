@@ -1,13 +1,23 @@
-import React, { useState } from "react";
+import React from "react";
+import { useState } from "react";
 import axios from "axios";
 import { APP_URL } from "../util";
 import { useNavigate } from "react-router-dom";
 import Success from "../assets/Success";
 
-function HostEvent({ handleSetOption }) {
-  const [isCreated, setIsCreated] = useState(false);
-  const navigate = useNavigate();
+function HostEvent({handleSetOption}) {
 
+  
+
+  const handleCreated = (e) => {
+    setIsCreated(e);
+  };
+
+
+
+  const [isCreated,setIsCreated] = useState(false) 
+
+  const navigate = useNavigate();
   const [event, setEvent] = useState({
     title: "",
     description: "",
@@ -42,13 +52,15 @@ function HostEvent({ handleSetOption }) {
     }));
   };
 
-  const handleCreated = (e) => {
-    setIsCreated(e);
-  };
+console.log(event);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      if(event.description.length<15){
+        return alert("erroe 15")
+      }
+
       const response = await axios.post(
         `${APP_URL}/event/create-event`,
         event,
@@ -59,8 +71,6 @@ function HostEvent({ handleSetOption }) {
           },
         }
       );
-
-      // Reset the event state
       setEvent({
         title: "",
         description: "",
@@ -75,30 +85,25 @@ function HostEvent({ handleSetOption }) {
           premiumPrice: "",
         },
       });
-
       console.log("Event created successfully:", response.data);
-      handleCreated(true);
+      handleCreated(true)
       
     } catch (error) {
       console.error("Error creating event:", error);
-
-      // Check if response status is 403
-      if (error.response && error.response.status === 403) {
-        // Remove token from local storage
-        localStorage.removeItem('token');
-        // Optionally, redirect the user
-        navigate('/login'); // or your desired path
-      }
     }
   };
 
+
   return (
     <div className="h-[50%] w-[80%]">
-      <form className="bg-white px-8 pt-6 pb-8 mb-4 text-gray-700 font-sans" onSubmit={handleSubmit}>
+      <form className="bg-white  px-8 pt-6 pb-8 mb-4  text-gray-700 font-sans" onSubmit={handleSubmit}>
         <h2 className="block font-sans text-3xl antialiased font-semibold leading-snug tracking-normal text-red-500">Create Event</h2>
 
         <div className="mb-4">
-          <label className="block text-gray-700 font-normal" htmlFor="title">
+          <label
+            className="block text-gray-700 font-normal "
+            htmlFor="title"
+          >class
             Event Title
           </label>
           <input
@@ -113,8 +118,11 @@ function HostEvent({ handleSetOption }) {
         </div>
 
         <div className="mb-4">
-          <label className="block text-gray-700 font-normal" htmlFor="description">
-            Event Description
+          <label
+            className="block text-gray-700 font-normal"
+            htmlFor="description"
+          >
+
           </label>
           <textarea
             id="description"
@@ -127,8 +135,10 @@ function HostEvent({ handleSetOption }) {
         </div>
 
         <div className="mb-4">
-          <label className="block text-gray-700 font-normal" htmlFor="location">
-            Event Location
+          <label
+            className="block text-gray-700 font-normal"
+            htmlFor="location"
+          >
           </label>
           <input
             id="location"
@@ -142,7 +152,10 @@ function HostEvent({ handleSetOption }) {
         </div>
 
         <div className="mb-4">
-          <label className="block text-gray-700 font-normal" htmlFor="startTime">
+          <label
+            className="block text-gray-700 font-normal"
+            htmlFor="startTime"
+          >
             Start Time
           </label>
           <input
@@ -156,7 +169,10 @@ function HostEvent({ handleSetOption }) {
         </div>
 
         <div className="mb-4">
-          <label className="block text-gray-700 font-normal" htmlFor="endTime">
+          <label
+            className="block text-gray-700 font-normal"
+            htmlFor="endTime"
+          >
             End Time
           </label>
           <input
@@ -170,8 +186,11 @@ function HostEvent({ handleSetOption }) {
         </div>
 
         <div className="mb-4">
-          <label className="block text-gray-700 font-normal" htmlFor="capacity">
-            Event Capacity
+          <label
+            className="block text-gray-700 font-normal"
+            htmlFor="capacity"
+          >
+
           </label>
           <input
             id="capacity"
@@ -188,7 +207,10 @@ function HostEvent({ handleSetOption }) {
           <h3 className="text-lg font-semibold mb-2">Ticket Pricing</h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
-              <label className="block text-gray-700 font-normal" htmlFor="basicPrice">
+              <label
+                className="block text-gray-700 font-normal"
+                htmlFor="basicPrice"
+              >
                 Basic Price
               </label>
               <input
@@ -202,7 +224,10 @@ function HostEvent({ handleSetOption }) {
               />
             </div>
             <div>
-              <label className="block text-gray-700 font-normal" htmlFor="standardPrice">
+              <label
+                className="block text-gray-700 font-normal"
+                htmlFor="standardPrice"
+              >
                 Standard Price
               </label>
               <input
@@ -216,7 +241,10 @@ function HostEvent({ handleSetOption }) {
               />
             </div>
             <div>
-              <label className="block text-gray-700 font-normal" htmlFor="premiumPrice">
+              <label
+                className="block text-gray-700 font-normal"
+                htmlFor="premiumPrice"
+              >
                 Premium Price
               </label>
               <input
@@ -241,8 +269,8 @@ function HostEvent({ handleSetOption }) {
           </button>
         </div>
       </form>
+    {isCreated && <Success handleCreated={handleCreated} handleSetOption={handleSetOption}/>}
 
-      {isCreated && <Success handleCreated={handleCreated} handleSetOption={handleSetOption} />}
     </div>
   );
 }
