@@ -9,6 +9,17 @@ const Menu = ({ currentOption, handleSetOption }) => {
                 </h5>
             </div>
             <nav className="flex min-w-[240px] flex-col gap-1 p-2 font-sans text-base font-normal text-blue-gray-700">
+               
+            <div
+                    role="button"
+                    className={`flex items-center w-full p-3 leading-tight transition-all rounded-lg outline-none text-start ${
+                        currentOption === 'profile' ? 'bg-red-400 text-white' : 'hover:bg-blue-gray-50 hover:bg-opacity-80 hover:text-blue-gray-900'
+                    }`}
+                    onClick={() => handleSetOption('profile')}
+                >
+                    Profile
+                </div>
+               
                 <div
                     role="button"
                     className={`flex items-center w-full p-3 leading-tight transition-all rounded-lg outline-none text-start ${

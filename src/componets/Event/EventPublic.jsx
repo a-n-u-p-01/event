@@ -1,8 +1,9 @@
 import React from "react";
 import { IoLocation } from "react-icons/io5";
 import { CiCalendarDate } from "react-icons/ci";
+import { IoPersonSharp } from "react-icons/io5";
 
-function Event() {
+function EventPublic() {
   return (
     <div className="bg-white m-5 w-full p-3 rounded-xl shadow-sm overflow-scroll custom-scrollbar">
       <img
@@ -22,21 +23,16 @@ function Event() {
       <div className="flex items-center justify-between pt-4 font-sans font-normal">
         <span className="flex items-center gap-1"><IoPersonSharp/>Host</span><span className="flex items-center gap-1"><IoLocation /> Location</span>
     </div>
-
-
+      
       <div className="flex items-center justify-between pt-4 font-sans font-normal">
-        <span className="flex items-center gap-1">
-          <CiCalendarDate />
-          Start
-        </span>
-        <span className="flex items-center gap-1">
-          <CiCalendarDate />
-          End
-        </span>
-      </div>
-      <div className="flex items-center justify-between pt-4 font-sans font-normal">
+        <span className="flex items-center gap-1"><CiCalendarDate/>Start</span>
+        <span className="flex items-center gap-1"><CiCalendarDate/>Start</span>
+    </div>
+    <div className="flex items-center justify-between pt-4 font-sans font-normal">
         <span>Tickets: 100</span>
+        <span>Booked: 100</span>
       </div>
+
       <div className="font-normal flex justify-between pt-5">
         <span className="text-lg">Free/110$</span>
         <button
@@ -59,4 +55,4 @@ function Event() {
   );
 }
 
-export default Event;
+export default EventPublic;

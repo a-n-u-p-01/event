@@ -10,14 +10,8 @@ function EventCard({event}) {
       };
     
   return (
-    <div className="w-64 h-80 bg-white rounded-3xl shadow"> 
-      <a href="#">
-        <img 
-          className="h-32 w-full object-cover rounded-t-3xl " 
-          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQXJwWsN9_agd7d8dQO6U8IW09RUdSAhFAO5A&s"
-          alt="Event image" 
-        />
-      </a>
+    <div className="w-72 h-48 bg-gray-800/10 rounded-3xl shadow-lg"> 
+      
       <div className="p-3">
         <a href="#">
           <h5 className="mb-2 text-lg font-bold tracking-tight text-gray-900">

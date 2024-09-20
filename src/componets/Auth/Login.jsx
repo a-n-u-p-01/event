@@ -23,11 +23,11 @@ const Login = () => {
         });
         if (response.data?.token) {
          
-            localStorage.setItem("token", response.data.token); // Correct token access
+            localStorage.setItem("token", response.data.token);
             navigate("/dashboard");
         }
       } catch (error) {
-        console.log("Login Failed", error); // Added error logging
+        console.log("Login Failed", error);
       }
     };
 
