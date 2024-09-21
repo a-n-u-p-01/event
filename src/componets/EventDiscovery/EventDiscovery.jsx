@@ -3,6 +3,7 @@ import EventCard2 from "../Event/EventCard2";
 import EventPublic from "../Event/EventPublic";
 import { useLocation } from 'react-router-dom';
 import EventCard2Skeleton from "../Loading/EventCard2Skeleton";
+import { APP_URL } from "../util";
 
 const EventDiscovery = () => {
   const [eventId, setEventId] = useState();
@@ -24,7 +25,7 @@ const EventDiscovery = () => {
   
       const timer = setTimeout(() => {
         // Fetch all events from the API
-        fetch('http://localhost:8888/api/event/get-all')
+        fetch(`${APP_URL}/event/get-all`)
           .then(response => {
             if (!response.ok) {
               throw new Error('Network response was not ok');

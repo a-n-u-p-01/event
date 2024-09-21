@@ -3,6 +3,7 @@ import { IoLocation } from "react-icons/io5";
 import { CiCalendarDate } from "react-icons/ci";
 import { IoPersonSharp } from "react-icons/io5";
 import EventPublicSkeleton from "../Loading/EventPublicSkeleton";
+import { APP_URL } from "../util";
 
 function EventPublic({ eventId }) {
   const [event, setEvent] = useState(null);
@@ -15,7 +16,7 @@ function EventPublic({ eventId }) {
     const fetchEvent = async () => {
       setLoading(true);
       try {
-        const response = await fetch(`http://localhost:8888/api/event/get-event/${eventId}`);
+        const response = await fetch(`${APP_URL}/event/get-event/${eventId}`);
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }

@@ -57,12 +57,7 @@ console.log(event);
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      if(event.description.length<15){
-        alert("Event description must be at least 15 characters long.")
-        navigate("/")
-        return
-      }
-
+     
       const response = await axios.post(
         `${APP_URL}/event/create-event`,
         event,

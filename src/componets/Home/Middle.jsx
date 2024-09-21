@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import EventCard from "../Event/EventCard";
 import { useNavigate } from "react-router-dom";
 import Category from "../Event/Category";
+import { APP_URL } from "../util";
 
 function Middle() {
   const [events, setEvents] = useState([]);
@@ -11,23 +12,30 @@ function Middle() {
     navigate("/events");
   };
 
-  useEffect(() => {
-    // Fetch data from the API
-    fetch(`http://localhost:8888/api/event/get-all`)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        setEvents(data);
-        console.log(data);
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-      });
-  }, []);
+  try{
+    useEffect(() => {
+      // Fetch data from the API
+      fetch(`${APP_URL}/event/get-all`)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          return response.json();
+        })
+        .then((data) => {
+          setEvents(data);
+          console.log(data);
+        })
+        .catch((error) => {
+          console.error("Error fetching data:", error);
+        });
+    }, []);
+  }catch(e){
+    console.log("___________________________")
+   console.log(e)
+   console.log("___________________________")
+  }
+
 
   return (
     <div className="w-full h-auto max-w-screen-xl mx-auto rounded-3xl p-6">
