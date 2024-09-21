@@ -72,8 +72,12 @@ const EventDiscovery = () => {
     }
   }, [query, events]);
 
+
+
+
+
   return (
-    <div className="bg-red-400 h-[50rem] flex ml-24 mt-16">
+    <div className="bg-red-400 h-64 md:h-[50rem] flex ml-0 md:ml-24 mt-16">
       <div className="bg-white h-full w-full flex justify-center pt-7">
         <EventPublic eventId={eventId} />
       </div>

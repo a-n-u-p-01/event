@@ -1,23 +1,62 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import EventCard2 from "../Event/EventCard2";
-import FilterBtn from "./FilterBtn";
 import EventHosting from "../Event/EventHosting";
+import { APP_URL } from "../util";
+import EventCard3 from "../Event/EventCard3";
 
 function HostingEvent() {
+  const [events, setEvents] = useState([]);
+  const [hostEventId, setHostEventId] = useState();
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const response = await axios.get(`${APP_URL}/event/get-events`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+            "Content-Type": "application/json",
+          },
+        });
+        
+        const fetchedEvents = response.data.events;
+
+        // Reverse the fetched events and set state
+        const reversedEvents = fetchedEvents.reverse();
+        setEvents(reversedEvents);
+
+        // Set hostEventId to the ID of the first event in the reversed order
+        if (reversedEvents.length > 0) {
+          setHostEventId(reversedEvents[0].eventId);
+        }
+      } catch (err) {
+        console.error("Error fetching events:", err);
+      }
+    };
+
+    fetchEvents();
+  }, []);
+
   return (
-    <div className="bg-green-500 flex justify-between">
-      
-        <div className="bg-red-700  overflow-scroll custom-scrollbar p-5">
-          <EventCard2 />
-          <EventCard2 />
-          <EventCard2 />
-        </div>
-    
-      <div className="flex justify-center bg-orange-400 w-[60%] pt-6">
-        <EventHosting />
+    <div className=" flex justify-between w-full h-screen">
+      <div className="overflow-scroll custom-scrollbar p-5 h-full pl-14">
+        {events.length > 0 ? (
+          events.map((event) => (
+            <EventCard3
+              key={event.eventId}
+              event={event}
+              setHostEventId={setHostEventId}
+            />
+          ))
+        ) : (
+          <div>No events found.</div>
+        )}
+      </div>
+      <div className="flex justify-center pr-20 h-full pt-6 ">
+        <EventHosting hostEventId={hostEventId} />
       </div>
     </div>
   );
 }
 
-export default HostingEvent; 
+export default HostingEvent;

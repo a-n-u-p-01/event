@@ -15,12 +15,12 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="bg-red-400  h-[50rem] flex ml-24 mt-20">
-      <div className="bg-yellow-300 h-full w-[25%]">
+    <div className="  h-[50rem] flex ml-24 mt-20">
+      <div className=" h-full w-[25%]">
         <Menu currentOption={option} handleSetOption={handleSetOption} />
       </div>
 
-      <div className="bg-blue-400 border-l-2 border-l-red-200 h-full w-full flex justify-center pt-7 ">
+      <div className=" border-l-2 border-l-red-200 h-full w-full flex justify-center pt-7 ">
       {option === 'profile' && <ProfileDetails />}
         {option === 'hosting' && <HostingEvent />}
         {option === 'attending' && <AttendingEvent />}

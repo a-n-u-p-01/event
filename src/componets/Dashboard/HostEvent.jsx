@@ -6,9 +6,6 @@ import { useNavigate } from "react-router-dom";
 import Success from "../assets/Success";
 
 function HostEvent({handleSetOption}) {
-
-  
-
   const handleCreated = (e) => {
     setIsCreated(e);
   };
@@ -57,6 +54,16 @@ console.log(event);
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+
+      if(event.title.length < 5 ){
+        alert("Enter minimum 5 word for title.")
+        return
+      }
+
+      if(event.description.length < 10 ){
+        alert("Enter minimum 10 word for description.")
+        return
+      }
      
       const response = await axios.post(
         `${APP_URL}/event/create-event`,
@@ -84,9 +91,9 @@ console.log(event);
       });
       console.log("Event created successfully:", response.data);
 
-      console.log("_______________-------------------______1");
-      console.log(response)
-      console.log("_______________-------------------______1");
+      // console.log("_______________-------------------______1");
+      // console.log(response)
+      // console.log("_______________-------------------______1");
    
       handleCreated(true)
       
@@ -105,8 +112,7 @@ console.log(event);
           <label
             className="block text-gray-700 font-normal "
             htmlFor="title"
-          >class
-            Event Title
+          >
           </label>
           <input
             id="title"

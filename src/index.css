@@ -16,10 +16,10 @@
 .custom-scrollbar::-webkit-scrollbar-thumb {
   background: #ef4444; /* Color of the scroll thumb */
   border-radius: 4px; /* Rounded corners of the scroll thumb */
+  transition: background-color 0.1s ease; /* Quick transition on thumb */
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background: #ef4444; /* Color of the scroll thumb on hover */
 }
 
-  
