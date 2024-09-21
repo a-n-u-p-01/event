@@ -3,7 +3,7 @@ import { IoLocation } from "react-icons/io5";
 import { CiCalendarDate } from "react-icons/ci";
 import { IoPersonSharp } from "react-icons/io5";
 
-function EventHostd() {
+function EventHosted() {
   return (
     <div className="bg-white m-5 w-full p-3 rounded-xl shadow-sm overflow-scroll custom-scrollbar">
       <img
@@ -51,4 +51,4 @@ function EventHostd() {
   );
 }
 
-export default EventHostd;
+export default EventHosted;

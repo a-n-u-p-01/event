@@ -1,6 +1,6 @@
 import React from "react";
 import EventCard2 from "../Event/EventCard2";
-import EventHostd from "../Event/Eventhosted";
+import EventHosted from "../Event/Eventhosted";
 function PastEvent() {
   return (
     <div className="bg-green-500 flex justify-between">
@@ -11,7 +11,7 @@ function PastEvent() {
       </div>
 
       <div className="flex justify-center bg-orange-400 w-[60%] pt-6">
-        <EventHostd />
+        <EventHosted />
       </div>
     </div>
   );
