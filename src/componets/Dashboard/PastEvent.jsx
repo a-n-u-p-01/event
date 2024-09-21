@@ -1,6 +1,6 @@
 import React from "react";
 import EventCard2 from "../Event/EventCard2";
-import EventHosted from "../Event/Eventhosted";
+import EventHosted from "../Event/EventHosted";
 function PastEvent() {
   return (
     <div className="bg-green-500 flex justify-between">

@@ -5,7 +5,6 @@ import HostingEvent from "./HostingEvent";
 import AttendingEvent from "./AttendingEvent";
 import SavedEvent from "./SavedEvent";
 import PastEvent from "./PastEvent";
-import Success from "../assets/Success";
 import ProfileDetails from "./ProfileDetails";
 
 const Dashboard = () => {
