@@ -5,7 +5,7 @@ import Middle from "./Middle";
 
 function Home() {
   return (
-    <div to='/Home' className="ml-24 mr-24 bg-white">
+    <div to='/Home' className="ml-24 mr-24">
       <Top />
       <Middle />
     </div>

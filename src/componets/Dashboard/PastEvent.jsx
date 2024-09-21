@@ -1,6 +1,5 @@
 import React from "react";
 import EventCard2 from "../Event/EventCard2";
-import FilterBtn from "./FilterBtn";
 import EventHostd from "../Event/Eventhosted";
 function PastEvent() {
   return (

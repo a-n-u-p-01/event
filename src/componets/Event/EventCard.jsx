@@ -15,11 +15,11 @@ function EventCard({event}) {
       <div className="p-3">
         <a href="#">
           <h5 className="mb-2 text-lg font-bold tracking-tight text-gray-900">
-                        {truncateText(event.title, 15)}
+                        {event.title}
           </h5>
         </a> 
         <p className="mb-3 font-normal text-sm text-gray-700">
-          {truncateText(event.description, 15)}
+          {truncateText(event.description, 5)}
         </p>
         <a 
           href=""

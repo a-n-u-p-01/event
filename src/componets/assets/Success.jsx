@@ -56,7 +56,7 @@ function Success({handleCreated,handleSetOption}) {
               <button
                 onClick={()=>{
                     handleCreated(false)
-                    handleSetOption('hosting')
+                    handleSetOption('/')
                 } }
                 type="button"
                 className="py-2 px-3 text-sm font-medium text-center text-gray-800 bg-blue-500 rounded-lg bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 dark:focus:ring-primary-900"

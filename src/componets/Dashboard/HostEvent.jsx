@@ -58,7 +58,9 @@ console.log(event);
     e.preventDefault();
     try {
       if(event.description.length<15){
-        return alert("erroe 15")
+        alert("Event description must be at least 15 characters long.")
+        navigate("/")
+        return
       }
 
       const response = await axios.post(
@@ -86,6 +88,11 @@ console.log(event);
         },
       });
       console.log("Event created successfully:", response.data);
+
+      console.log("_______________-------------------______1");
+      console.log(response)
+      console.log("_______________-------------------______1");
+   
       handleCreated(true)
       
     } catch (error) {

@@ -1,47 +1,57 @@
-import React, { useState } from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { CgProfile } from "react-icons/cg";
-
 
 export const Profile = () => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const navigate = useNavigate();
+    const dropdownRef = useRef(null); // Reference for dropdown menu
 
     const handleToggleDropdown = () => {
         setIsDropdownOpen(prev => !prev);
     };
 
     const handleGoDashboard = () => {
-        setIsDropdownOpen(false)
+        setIsDropdownOpen(false);
         navigate('/dashboard');
     };
 
     const handleViewProfile = () => {
-        // Implement the action for viewing profile
-        setIsDropdownOpen(false)
+        setIsDropdownOpen(false);
         console.log('View profile');
     };
 
     const handleLogout = () => {
+        localStorage.removeItem('token');
+        setIsDropdownOpen(false);
         navigate('/login');
-        // Implement the action for logout
-        localStorage.removeItem('token')
-        setIsDropdownOpen(false)
     };
 
+    // Close dropdown on clicking outside
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+                setIsDropdownOpen(false);
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
+
     return (
-        <div className="relative font-[sans-serif] w-max mx-auto">
+        <div className="relative font-[sans-serif] w-max mx-auto" ref={dropdownRef}>
             <button
                 type="button"
                 id="dropdownToggle"
-                className="px-4 py-2 flex items-center rounded-full text-[#333] text-sm outline-none hover:text-red-200"
+                className="px-4 py-2 flex items-center rounded-full text-[#333] text-sm outline-none"
                 onClick={handleToggleDropdown}
             >
-                <CgProfile className="w-5 h-5 mr-1 rounded-full shrink-0 text-red-600"/>
-                
-                {localStorage.getItem('userName')? localStorage.getItem('userName') : "User Name"}
-              
-                <svg xmlns="http://www.w3.org/2000/svg" className="w-3 fill-gray-400 inline ml-3" viewBox="0 0 24 24">
+                <CgProfile className="w-5 h-5 mr-1 rounded-full shrink-0 text-red-600" />
+                {localStorage.getItem('userName') ? localStorage.getItem('userName') : "User Name"}
+                <svg xmlns="http://www.w3.org/2000/svg" className="w-3 fill-gray-700 inline ml-3" viewBox="0 0 24 24">
                     <path
                         fillRule="evenodd"
                         d="M11.99997 18.1669a2.38 2.38 0 0 1-1.68266-.69733l-9.52-9.52a2.38 2.38 0 1 1 3.36532-3.36532l7.83734 7.83734 7.83734-7.83734a2.38 2.38 0 1 1 3.36532 3.36532l-9.52 9.52a2.38 2.38 0 0 1-1.68266.69734z"
@@ -55,7 +65,6 @@ export const Profile = () => {
                     id="dropdownMenu"
                     className="absolute shadow-lg bg-white py-2 z-[1000] min-w-full w-max rounded-lg max-h-96 overflow-auto"
                 >
-                    
                     <li
                         className="py-2.5 px-5 flex items-center hover:bg-gray-100 text-[#333] text-sm cursor-pointer"
                         onClick={handleGoDashboard}

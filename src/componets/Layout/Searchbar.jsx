@@ -74,7 +74,7 @@ function Searchbar() {
           id="simple-search"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          className="w-[20rem] h-9 bg-red-50 border-red-700 text-gray-900 font-normal rounded-3xl border-none block ps-10 p-2.5 focus:outline-none focus:bg-white focus:ring-2 focus:ring-red-600"
+          className="w-[20rem] h-9  border-red-700 text-gray-900 font-normal rounded-3xl border-none block ps-10 p-2.5 focus:outline-none focus:bg-white focus:ring-2 focus:ring-red-600"
           placeholder="Search Events"
           
         />

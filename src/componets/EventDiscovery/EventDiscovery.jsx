@@ -21,7 +21,7 @@ const EventDiscovery = () => {
     if (isFirstLoad.current) {
       // Set loading to true before fetching
       setLoading(true);
-
+  
       const timer = setTimeout(() => {
         // Fetch all events from the API
         fetch('http://localhost:8888/api/event/get-all')
@@ -32,11 +32,15 @@ const EventDiscovery = () => {
             return response.json();
           })
           .then(data => {
-            setEvents(data);
-            console.log("Fetched events:", data); // Debugging line
-          
-            setEventId(data[0].eventId); // Set eventId to the first event's ID
-     
+            // Reverse the fetched events
+            const reversedEvents = data.reverse();
+            setEvents(reversedEvents);
+            console.log("Fetched events (reversed):", reversedEvents); // Debugging line
+  
+            // Set eventId to the first event's ID
+            if (reversedEvents.length > 0) {
+              setEventId(reversedEvents[0].eventId);
+            }
           })
           .catch(error => {
             console.error('Error fetching data:', error);
@@ -45,8 +49,8 @@ const EventDiscovery = () => {
             setLoading(false); // Set loading to false after fetching
             isFirstLoad.current = false; // Mark as not the first load anymore
           });
-      }, 500); // Delay for 2000 milliseconds (2 seconds)
-
+      }, 500); // Delay for 500 milliseconds
+  
       // Cleanup the timer if the component unmounts
       return () => clearTimeout(timer);
     } else {
@@ -54,7 +58,7 @@ const EventDiscovery = () => {
       setLoading(false);
     }
   }, []);
-
+  
   useEffect(() => {
     // Filter events based on the search query
     if (query) {
@@ -68,7 +72,7 @@ const EventDiscovery = () => {
   }, [query, events]);
 
   return (
-    <div className="bg-red-400 h-[50rem] flex ml-24 mt-14">
+    <div className="bg-red-400 h-[50rem] flex ml-24 mt-16">
       <div className="bg-white h-full w-full flex justify-center pt-7">
         <EventPublic eventId={eventId} />
       </div>
