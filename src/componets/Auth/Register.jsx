@@ -41,7 +41,8 @@ const Register = () => {
             if (response.data?.token) {
                 localStorage.setItem("token", response.data.token);
                 localStorage.setItem("userName", formData.fullName); 
-                console.log(response.data);
+                localStorage.setItem("userId", response.data.userId); 
+                console.log(response.data.userId);
                 navigate("/dashboard");
             }
         } catch (error) {
@@ -63,12 +64,7 @@ const Register = () => {
     return (
         <motion.div className="bg-white w-full h-full flex justify-center p-36">
             <div className="h-full px-4 w-full lg:w-[45%] flex flex-col items-center">
-                <button onClick={handleGoHome}>Home</button>
-                <div className="flex flex-col justify-center items-center">
-                    <p className="my-1 text-sm text-gray-700">
-                        Create your account by filling in the details below
-                    </p>
-                </div>
+                <button onClick={handleGoHome}>Go Home</button>
 
                 {error && <p className="text-red-500">{error}</p>} 
 

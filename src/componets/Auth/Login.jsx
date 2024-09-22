@@ -31,6 +31,8 @@ const Login = () => {
 
             if (response.data?.token) {
                 localStorage.setItem("token", response.data.token);
+                localStorage.setItem("userId", response.data.userId);
+                console.log( localStorage.getItem("userId"))
                 localStorage.setItem("userName", response.data.userName);
                 navigate("/dashboard");
             }
@@ -53,7 +55,7 @@ const Login = () => {
     return (
         <motion.div className='bg-white w-full h-full flex justify-center p-36'>
             <div className="h-full px-4 w-full lg:w-[45%] flex flex-col items-center">
-                <button onClick={handleGoHome}>Home</button>
+                <button onClick={handleGoHome}>Go Home</button>
 
                 {error && <p className="text-red-500">{error}</p>} {/* Display error message */}
 

@@ -31,7 +31,11 @@ export const Profile = () => {
         setLoggingOut(true)
         setTimeout(() => {
             setLoggingOut(false)
+            console.log( localStorage.getItem('userId'))
             localStorage.removeItem('token');
+            localStorage.removeItem('userName');
+            localStorage.removeItem('userId');
+            console.log( localStorage.getItem('userId'))
             navigate('/login');
         }, 1000); 
     };

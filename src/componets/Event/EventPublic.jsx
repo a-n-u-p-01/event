@@ -7,7 +7,7 @@ import { APP_URL } from "../util";
 import { useNavigate } from "react-router-dom";
 import Feedback from "./Feedbacks";
 
-function EventPublic({ eventId,setShowFeedbacks,showFeedbacks }) {
+function EventPublic({ eventId, setShowFeedbacks, showFeedbacks }) {
   const [event, setEvent] = useState(null);
   const [loading, setLoading] = useState(true);
   const [selectedTicket, setSelectedTicket] = useState(null);
@@ -106,135 +106,149 @@ function EventPublic({ eventId,setShowFeedbacks,showFeedbacks }) {
 
   const isSoldOut = bookedNumber >= capacity;
 
-  return (
-    showFeedbacks ? <Feedback setShowFeedbacks={setShowFeedbacks} eventId={eventId}/> :
-    <div className="flex flex-col h-full bg-gray-800/5 m-5 shadow-md w-full p-3 rounded-xl overflow-hidden">
-      <img
-        className="h-[30%] w-full rounded-lg object-cover object-center"
-        src={imageUrl}
-        alt="Event"
-      />
+  let ticketButton;
 
-      <div className="text-xl m-2">
-        <span className="bg-zinc-600/20 p-1 m-1 text-lg font-sans rounded-lg">
-          {eventId}
-        </span>
-        {title || "N/A"}
-      </div>
-      <div className="bg-gray-500/10 rounded-lg p-2 font-normal">
-        Description: {description || "N/A"}
-      </div>
-
-      <div className="flex items-center justify-between pt-4 font-sans font-normal">
-        <span className="flex items-center gap-1">
-          <IoPersonSharp /> {organizer?.fullName || "N/A"}
-        </span>
-        <span className="flex items-center gap-1">
-          <IoLocation /> {location || "N/A"}
-        </span>
-      </div>
-
-      <div className="flex items-center justify-between pt-4 font-sans font-normal">
-        <span className="flex items-center gap-1">
-          <CiCalendarDate /> Start: {startTime || "N/A"}
-        </span>
-        <span className="flex items-center gap-1">
-          <CiCalendarDate /> End: {endTime || "N/A"}
-        </span>
-      </div>
-
-      <div className="flex items-center justify-between pt-4 font-sans font-normal">
-        <span>Tickets: {capacity || "N/A"}</span>
-        <span>Booked: {bookedNumber}</span>
-      </div>
-
-      <div
-        className="font-normal flex justify-between pt-5 relative"
-        ref={dropdownRef}
-      >
-        {event.status && !isSoldOut ? (
-          <>
-            <button
-              onClick={toggleDropdown}
-              className="rounded-md bg-blue-700 py-2 px-4 border border-transparent text-center text-sm text-white transition-all shadow-md hover:shadow-lg"
-              type="button"
-              aria-haspopup="true"
-              aria-expanded={isDropdownOpen}
-            >
-              {selectedTicket
-                ? `${
-                    selectedTicket.charAt(0).toUpperCase() +
-                    selectedTicket.slice(1)
-                  } - $${ticketPricing?.[`${selectedTicket}Price`] || "N/A"}`
-                : "Price"}
-            </button>
-            {isDropdownOpen && (
-              <ul
-                role="menu"
-                className="absolute mt-10 z-10 min-w-[180px] overflow-auto rounded-lg border border-slate-200 bg-white p-1.5"
-              >
-                {["basic", "standard", "premium"].map((type) => (
-                  <li
-                    key={type}
-                    role="menuitem"
-                    onClick={() => handleTicketSelect(type)}
-                    className={`cursor-pointer text-slate-800 flex w-full text-sm items-center rounded-md p-3 transition-all hover:bg-slate-100 focus:bg-slate-100 active:bg-slate-100 ${
-                      selectedTicket === type ? "bg-slate-200" : ""
-                    }`}
-                  >
-                    {type.charAt(0).toUpperCase() + type.slice(1)} - $
-                    {ticketPricing?.[`${type}Price`] || "N/A"}
-                  </li>
-                ))}
-              </ul>
-            )}
-          </>
-        ) : isSoldOut ? (
-          <span className="text-red-700 font-mono p-2 font-semibold text-lg">
-            Ended
-          </span>
-        ) : (
-          <span className="text-red-700 font-mono p-2 font-semibold text-lg">
-          Sold Out
-        </span>
-        )}
-
-        {!isSoldOut && event.status && (
-          <button
-            onClick={handleBuyTicket}
-            type="button"
-            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center"
-          >
-            <svg
-              className="w-3.5 h-3.5 me-2"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="currentColor"
-              viewBox="0 0 18 21"
-            >
-              <path d="M15 12a1 1 0 0 0 .962-.726l2-7A1 1 0 0 0 17 3H3.77L3.175.745A1 1 0 0 0 2.208 0H1a1 1 0 0 0 0 2h.438l.6 2.255v.019l2 7 .746 2.986A3 3 0 1 0 9 17a2.966 2.966 0 0 0-.184-1h2.368c-.118.32-.18.659-.184 1a3 3 0 1 0 3-3H6.78l-.5-2H15Z" />
-            </svg>
-            Buy Ticket
-          </button>
-        )}
-      </div>
-
-      {/* Feedback button with disabled state based on event status */}
-      <div className="mt-auto p-2">
+  if (event.status && !isSoldOut) {
+    ticketButton = (
+      <>
         <button
-          onClick={() => 
-            setShowFeedbacks(true)
-          }
+          onClick={toggleDropdown}
+          className="rounded-md bg-blue-700 py-2 px-4 border border-transparent text-center text-sm text-white transition-all shadow-md hover:shadow-lg"
           type="button"
-          className={`font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center w-full ${
-            event.status ? "bg-gray-300 text-red-600 cursor-not-allowed" : "bg-blue-700 text-white hover:bg-blue-800"
-          }`}
-          disabled={event.status}
+          aria-haspopup="true"
+          aria-expanded={isDropdownOpen}
         >
-          See Feedbacks
+          {selectedTicket
+            ? `${selectedTicket.charAt(0).toUpperCase() + selectedTicket.slice(1)} - $${ticketPricing?.[`${selectedTicket}Price`] || "N/A"}`
+            : "Price"}
         </button>
+        {isDropdownOpen && (
+          <ul
+            role="menu"
+            className="absolute mt-10 z-10 min-w-[180px] overflow-auto rounded-lg border border-slate-200 bg-white p-1.5"
+          >
+            {["basic", "standard", "premium"].map((type) => (
+              <li
+                key={type}
+                role="menuitem"
+                onClick={() => handleTicketSelect(type)}
+                className={`cursor-pointer text-slate-800 flex w-full text-sm items-center rounded-md p-3 transition-all hover:bg-slate-100 focus:bg-slate-100 active:bg-slate-100 ${
+                  selectedTicket === type ? "bg-slate-200" : ""
+                }`}
+              >
+                {type.charAt(0).toUpperCase() + type.slice(1)} - $
+                {ticketPricing?.[`${type}Price`] || "N/A"}
+              </li>
+            ))}
+          </ul>
+        )}
+      </>
+    );
+  } else if (isSoldOut == true && event.status == true) {
+    ticketButton = (
+      <span className="text-red-700 font-mono p-2 font-semibold text-lg">
+        Sold Out
+      </span>
+    );
+  } else if(isSoldOut == false && event.status == false) {
+    ticketButton = (
+      <span className="text-red-700 font-mono p-2 font-semibold text-lg">
+        Ended
+      </span>
+    );
+  }
+  else if(isSoldOut == true && event.status == false) {
+    ticketButton = (
+      <span className="text-red-700 font-mono p-2 font-semibold text-lg">
+        Ended
+      </span>
+    );
+  }
+
+console.log(event)
+  return (
+    showFeedbacks ? (
+      <Feedback setShowFeedbacks={setShowFeedbacks} eventId={eventId} />
+    ) : (
+      <div className="flex flex-col h-full bg-gray-800/5 m-5 shadow-md w-full p-3 rounded-xl overflow-hidden">
+        <img
+          className="h-[30%] w-full rounded-lg object-cover object-center"
+          src={imageUrl}
+          alt="Event"
+        />
+
+        <div className="text-xl m-2">
+          <span className="bg-zinc-600/20 p-1 m-1 text-lg font-sans rounded-lg">
+            {eventId}
+          </span>
+          {title || "N/A"}
+        </div>
+        <div className="bg-gray-500/10 rounded-lg p-2 font-normal">
+          Description: {description || "N/A"}
+        </div>
+
+        <div className="flex items-center justify-between pt-4 font-sans font-normal">
+          <span className="flex items-center gap-1">
+            <IoPersonSharp /> {event.organizer.userId == localStorage.getItem('userId') ? "You" : organizer?.fullName || "N/A"}
+            -[Host]
+          </span>
+          <span className="flex items-center gap-1">
+            <IoLocation /> {location || "N/A"}
+          </span>
+        </div>
+
+        <div className="flex items-center justify-between pt-4 font-sans font-normal">
+          <span className="flex items-center gap-1">
+            <CiCalendarDate /> Start: {startTime || "N/A"}
+          </span>
+          <span className="flex items-center gap-1">
+            <CiCalendarDate /> End: {endTime || "N/A"}
+          </span>
+        </div>
+
+        <div className="flex items-center justify-between pt-4 font-sans font-normal">
+          <span>Tickets: {capacity || "N/A"}</span>
+          <span>Booked: {bookedNumber}</span>
+        </div>
+
+        <div className="font-normal flex justify-between pt-5 relative" ref={dropdownRef}>
+          {ticketButton}
+
+          {!isSoldOut && event.status && (
+            <button
+              onClick={handleBuyTicket}
+              type="button"
+              className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center"
+            >
+              <svg
+                className="w-3.5 h-3.5 me-2"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="currentColor"
+                viewBox="0 0 18 21"
+              >
+                <path d="M15 12a1 1 0 0 0 .962-.726l2-7A1 1 0 0 0 17 3H3.77L3.175.745A1 1 0 0 0 2.208 0H1a1 1 0 0 0 0 2h.438l.6 2.255v.019l2 7 .746 2.986A3 3 0 1 0 9 17a2.966 2.966 0 0 0-.184-1h2.368c-.118.32-.18.659-.184 1a3 3 0 1 0 3-3H6.78l-.5-2H15Z" />
+              </svg>
+              Buy Ticket
+            </button>
+          )}
+        </div>
+
+        {/* Feedback button with disabled state based on event status */}
+        <div className="mt-auto p-2">
+          <button
+            onClick={() => setShowFeedbacks(true)}
+            type="button"
+            className={`font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center w-full ${
+              event.status ? "bg-gray-300 text-red-600 cursor-not-allowed" : "bg-blue-700 text-white hover:bg-blue-800"
+            }`}
+            disabled={event.status}
+          >
+            See Feedbacks
+          </button>
+        </div>
       </div>
-    </div>
+    )
   );
 }
 
