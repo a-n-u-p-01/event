@@ -13,18 +13,26 @@ function EventAttending({ ticket }) {
     );
   }
 
-  const { event } = ticket; // Destructure event and user from ticket
+  const { event } = ticket; // Destructure event from ticket
 
- 
   // Safely access properties to avoid errors
-  const userName = event.organizer.fullName || "Unknown Host";
+  const userName = event.organizer?.fullName || "Unknown Host";
   const eventTitle = event?.title || "No Title";
   const eventDescription = event?.description || "No Description";
   const eventLocation = event?.location || "Unknown Location";
   const startTime = event?.startTime ? new Date(event.startTime).toLocaleString() : "No Start Time";
   const endTime = event?.endTime ? new Date(event.endTime).toLocaleString() : "No End Time";
-  const status = event.status
-  
+  const status = event.status;
+  const ticketType = ticket.ticketType;
+
+  // Mapping ticket types to their respective descriptions and colors
+  const ticketTypeMap = {
+    1: { label: "Basic", color: "text-yellow-600" },  // Gold color
+    2: { label: "Standard", color: "text-gray-400" }, // Silver color
+    3: { label: "Premium", color: "text-yellow-300" }, // Bronze color
+  };
+
+  const ticketTypeInfo = ticketTypeMap[ticketType] || { label: "Unknown", color: "text-gray-500" };
 
   return (
     <div className="bg-gray-800/5 m-5 h-[55%] shadow-md w-full p-3 rounded-xl md:max-w-lg lg:max-w-xl">
@@ -56,8 +64,14 @@ function EventAttending({ ticket }) {
           <CiCalendarDate /> {endTime}
         </span>
       </div>
+      
       <div className="flex items-center justify-between pt-4 font-sans font-normal">
-        <span className={`p-1 font-mono ${status ? 'text-green-500' : 'text-red-500'}`}>Status {status ? "Active":"Ended"}</span>
+        <span className={`p-1 font-mono ${status ? 'text-green-500' : 'text-red-500'}`}>
+          Status: {status ? "Active" : "Ended"}
+        </span>
+        <span className={`p-1 font-mono ${ticketTypeInfo.color}`}>
+          {ticketTypeInfo.label}
+        </span>
       </div>
     </div>
   );

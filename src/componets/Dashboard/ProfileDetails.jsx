@@ -5,7 +5,7 @@ import UserData from "../User/UserData";
 
 function ProfileDetails() {
   return (
-    <div className="w-[80%] bg-green-500 custom-scrollbar flex gap-4">
+    <div className="w-[80%]  custom-scrollbar flex gap-4">
         <UserData/>
     </div>
   );

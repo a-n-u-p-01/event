@@ -13,11 +13,12 @@ import Home from "./componets/Home/Home";
 import Register from "./componets/Auth/Register";
 import Login from "./componets/Auth/Login";
 import Dashboard from "./componets/Dashboard/Dashboard";
+import PaymentForm from "./componets/Payment/PaymentForm";
 
 
 function Layout() {
   const location = useLocation();
-  const hideHeaderAndFooterRoutes = ["/login", "/register"];
+  const hideHeaderAndFooterRoutes = ["/login", "/register","/payment"];
   const shouldHideHeaderAndFooter = hideHeaderAndFooterRoutes.includes(location.pathname);
 
   
@@ -41,6 +42,10 @@ function Layout() {
           <Route 
             path="/dashboard" 
             element={localStorage.getItem('token') ? <Dashboard /> : <Navigate to="/login" replace />} 
+          />
+            <Route 
+            path="/payment" 
+            element={localStorage.getItem('token') ? <PaymentForm /> : <Navigate to="/login" replace />} 
           />
         </Routes>
       </div>

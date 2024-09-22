@@ -29,7 +29,7 @@ function AttendingEvent() {
 
   return (
     <div className="flex justify-center pr-52">
-      <div className="overflow-scroll custom-scrollbar gap-3">
+      <div className="overflow-y-scroll custom-scrollbar gap-3">
         {tickets.length > 0 ? (
           tickets.slice().reverse().map((ticket) => (
             <EventAttending
@@ -38,7 +38,9 @@ function AttendingEvent() {
             />
           ))
         ) : (
-          <div>No events found.</div>
+          <p className="text-gray-500 transition-opacity duration-300 ease-in-out opacity-0">
+          No Event found.
+        </p>
         )}
       </div>
     </div>

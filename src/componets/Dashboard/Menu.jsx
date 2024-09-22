@@ -9,12 +9,12 @@ const Menu = ({ currentOption, handleSetOption }) => {
                 </h5>
             </div>
             <nav className="flex flex-col gap-1 p-2 font-sans text-base font-normal text-blue-gray-700">
-                {['profile', 'hosting', 'attending', 'hostEvent'].map((option) => (
+                {['profile', 'hosting', 'booked', 'hostEvent'].map((option) => (
                     <div
                         key={option}
                         role="button"
                         className={`menu-item flex items-center w-full p-3 rounded-lg ${
-                            currentOption === option ? 'bg-red-400 text-white' : 'hover:bg-red-100 hover:text-red-600'
+                            currentOption === option ? 'bg-red-400 text-white' : ' hover:text-red-600'
                         }`}
                         onClick={() => handleSetOption(option)}
                     >

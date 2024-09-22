@@ -1,8 +1,9 @@
 import React from 'react';
 import EventCard2Skeleton from '../Loading/EventCard2Skeleton';
 
-function EventCard3({ event, setHostEventId, loading }) {
-  const handClick = () => {
+function EventCard3({ event, setHostEventId, loading,setShowAttendees }) {
+  const handleClick = () => {
+    setShowAttendees(false)
     setHostEventId(event.eventId);
   };
 
@@ -12,9 +13,9 @@ function EventCard3({ event, setHostEventId, loading }) {
     return words.slice(0, wordLimit).join(' ') + '...';
   };
 
-  if (loading) {
-    return <EventCard2Skeleton />;
-  }
+  // if (loading) {
+  //   return <EventCard2Skeleton />;
+  // }
 
   return (
     <div id={event.eventId} className="my-6 bg-white h-60 shadow-sm border border-slate-200 rounded-lg w-96">
@@ -25,7 +26,7 @@ function EventCard3({ event, setHostEventId, loading }) {
           {/* <button onClick={handClick} className="rounded-md bg-slate-800 py-2 px-4 mt-6 border border-transparent text-center text-sm text-white transition-all shadow-md hover:shadow-lg focus:bg-slate-700 focus:shadow-none active:bg-slate-700 hover:bg-slate-700 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none" type="button">
             Read more
           </button> */}
-          <button onClick={handClick} className="rounded-md bg-slate-800 py-2 px-4 mt-6 border border-transparent text-center text-sm text-white transition-all shadow-md hover:shadow-lg focus:bg-slate-700 focus:shadow-none active:bg-slate-700 hover:bg-slate-700 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none" type="button">
+          <button onClick={handleClick} className="rounded-md bg-slate-800 py-2 px-4 mt-6 border border-transparent text-center text-sm text-white transition-all shadow-md hover:shadow-lg focus:bg-slate-700 focus:shadow-none active:bg-slate-700 hover:bg-slate-700 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none" type="button">
             More Details
           </button>
         </div>

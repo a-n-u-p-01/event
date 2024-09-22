@@ -4,37 +4,37 @@ import { CiCalendarDate } from "react-icons/ci";
 import { IoPersonSharp } from "react-icons/io5";
 import EventPublicSkeleton from "../Loading/EventPublicSkeleton";
 import { APP_URL } from "../util";
+import { useNavigate } from "react-router-dom"; 
 
 function EventPublic({ eventId }) {
   const [event, setEvent] = useState(null);
   const [loading, setLoading] = useState(true);
   const [selectedTicket, setSelectedTicket] = useState(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const dropdownRef = useRef(null); // Reference for dropdown
+  const dropdownRef = useRef(null);
   const [bookedNumber, setBookedNumber] = useState(0);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchEvent = async () => {
       setLoading(true);
       try {
+        // Simulate a loading delay
+        await new Promise((resolve) => setTimeout(resolve, 300));
+
         const response = await fetch(`${APP_URL}/event/get-event/${eventId}`);
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
+        if (!response.ok) throw new Error("Failed to fetch event.");
         const data = await response.json();
         setEvent(data.event);
-        setTimeout(() => {
-          setLoading(false);
-        }, 500);
       } catch (error) {
         console.error("Error fetching data:", error);
+        alert("Failed to load event. Please try again later.");
+      } finally {
         setLoading(false);
       }
     };
 
-    if (eventId) {
-      fetchEvent();
-    }
+    if (eventId) fetchEvent();
   }, [eventId]);
 
   useEffect(() => {
@@ -56,9 +56,7 @@ function EventPublic({ eventId }) {
         const response = await fetch(
           `${APP_URL}/ticket/get-no-ticket-booked/${eventId}`
         );
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
+        if (!response.ok) throw new Error("Network response was not ok");
         const data = await response.json();
         setBookedNumber(data);
       } catch (error) {
@@ -95,6 +93,15 @@ function EventPublic({ eventId }) {
 
   const toggleDropdown = () => {
     setIsDropdownOpen((prev) => !prev);
+  };
+
+  const handleBuyTicket = () => {
+    if (selectedTicket) {
+      const price = ticketPricing?.[`${selectedTicket}Price`] || "N/A";
+      navigate(`/payment?id=${eventId}&type=${selectedTicket}&price=${price}`);
+    } else {
+      alert("Please select a ticket type before proceeding.");
+    }
   };
 
   const isSoldOut = bookedNumber >= capacity;
@@ -145,6 +152,8 @@ function EventPublic({ eventId }) {
               onClick={toggleDropdown}
               className="rounded-md bg-blue-700 py-2 px-4 border border-transparent text-center text-sm text-white transition-all shadow-md hover:shadow-lg"
               type="button"
+              aria-haspopup="true"
+              aria-expanded={isDropdownOpen}
             >
               {selectedTicket
                 ? `${selectedTicket.charAt(0).toUpperCase() + selectedTicket.slice(1)} - $${ticketPricing?.[`${selectedTicket}Price`] || "N/A"}`
@@ -180,9 +189,10 @@ function EventPublic({ eventId }) {
             Ended
           </span>
         )}
-        
+
         {!isSoldOut && event.status && (
           <button
+            onClick={handleBuyTicket}
             type="button"
             className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center"
           >

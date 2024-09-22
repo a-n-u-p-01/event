@@ -89,11 +89,6 @@ console.log(event);
           premiumPrice: "",
         },
       });
-      console.log("Event created successfully:", response.data);
-
-      // console.log("_______________-------------------______1");
-      // console.log(response)
-      // console.log("_______________-------------------______1");
    
       handleCreated(true)
       
