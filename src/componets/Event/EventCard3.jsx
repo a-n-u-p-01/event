@@ -1,35 +1,44 @@
 import React from 'react';
 import EventCard2Skeleton from '../Loading/EventCard2Skeleton';
 
-function EventCard3({ event, setHostEventId, loading,setShowAttendees }) {
+function EventCard3({ event, setHostEventId, loading, setShowAttendees, titleLimit = 40, descriptionLimit = 100 }) {
   const handleClick = () => {
-    setShowAttendees(false)
+    setShowAttendees(false);
     setHostEventId(event.eventId);
   };
 
-  const truncateText = (text, wordLimit) => {
-    const words = text.split(' ');
-    if (words.length <= wordLimit) return text;
-    return words.slice(0, wordLimit).join(' ') + '...';
+  const truncateText = (text, charLimit) => {
+    if (text.length <= charLimit) return text;
+    return text.slice(0, charLimit) + '...';
   };
+
+  // Truncate title and description based on the limits
+  const truncatedTitle = truncateText(event.title, titleLimit);
+  const truncatedDescription = truncateText(event.description, descriptionLimit);
 
   // if (loading) {
   //   return <EventCard2Skeleton />;
   // }
 
   return (
-    <div id={event.eventId} className="my-6 bg-white h-60 shadow-sm border border-slate-200 rounded-lg w-96">
-      <div className="p-4">
-        <h5 className="mb-2 text-slate-800 text-xl font-semibold">{event.title}</h5>
-        <p className="text-slate-600 leading-normal font-light">{truncateText(event.description, 15)}</p>
-        <div className='flex justify-end'>
-          {/* <button onClick={handClick} className="rounded-md bg-slate-800 py-2 px-4 mt-6 border border-transparent text-center text-sm text-white transition-all shadow-md hover:shadow-lg focus:bg-slate-700 focus:shadow-none active:bg-slate-700 hover:bg-slate-700 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none" type="button">
-            Read more
-          </button> */}
-          <button onClick={handleClick} className="rounded-md bg-slate-800 py-2 px-4 mt-6 border border-transparent text-center text-sm text-white transition-all shadow-md hover:shadow-lg focus:bg-slate-700 focus:shadow-none active:bg-slate-700 hover:bg-slate-700 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none" type="button">
-            More Details
-          </button>
-        </div>
+    <div id={event.eventId} className="my-6 bg-white h-48 shadow-sm border border-slate-200 rounded-lg w-96 relative flex flex-col">
+      <div className="p-4 flex-grow">
+        <h5 className="mb-2 text-slate-800 text-lg font-semibold bg-zinc-900/10 p-2 rounded-lg">
+          <span className='bg-zinc-100 m-1 p-1 text-sm rounded-lg'>{event.eventId}</span> 
+          {truncatedTitle}
+        </h5>
+        <p className="text-slate-600 leading-normal font-light">
+          <span className='font-semibold'>Description: </span>{truncatedDescription}
+        </p>
+      </div>
+      <div className="absolute bottom-4 right-4">
+        <button
+          onClick={handleClick}
+          className="rounded-md bg-slate-800 py-1 px-2 text-xs text-white transition-all shadow-md hover:shadow-lg focus:bg-slate-700 disabled:pointer-events-none disabled:opacity-50"
+          type="button"
+        >
+          More Details
+        </button>
       </div>
     </div>
   );

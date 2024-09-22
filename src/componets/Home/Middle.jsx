@@ -12,30 +12,23 @@ function Middle() {
     navigate("/events");
   };
 
-  try{
-    useEffect(() => {
-      // Fetch data from the API
-      fetch(`${APP_URL}/event/get-all`)
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error("Network response was not ok");
-          }
-          return response.json();
-        })
-        .then((data) => {
-          setEvents(data);
-          console.log(data);
-        })
-        .catch((error) => {
-          console.error("Error fetching data:", error);
-        });
-    }, []);
-  }catch(e){
-    console.log("___________________________")
-   console.log(e)
-   console.log("___________________________")
-  }
+  useEffect(() => {
+    // Fetch data from the API
+    const fetchEvents = async () => {
+      try {
+        const response = await fetch(`${APP_URL}/event/get-all`);
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const data = await response.json();
+        setEvents(data.reverse()); // Reverse here after fetching
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
 
+    fetchEvents();
+  }, []); // Empty dependency array to run only once on mount
 
   return (
     <div className="w-full h-auto max-w-screen-xl mx-auto rounded-3xl p-6">

@@ -24,6 +24,7 @@ function EventAttending({ ticket }) {
   const endTime = event?.endTime ? new Date(event.endTime).toLocaleString() : "No End Time";
   const status = event.status;
   const ticketType = ticket.ticketType;
+  
 
   // Mapping ticket types to their respective descriptions and colors
   const ticketTypeMap = {
@@ -42,7 +43,11 @@ function EventAttending({ ticket }) {
         alt={eventTitle}
       />
 
-      <div className="text-2xl m-2">{eventTitle}</div>
+      <div className="text-xl m-2">
+      <span className="bg-zinc-600/20  mr-2 text-sm font-sans rounded-lg">
+            {event.eventId}
+          </span>
+        {eventTitle}</div>
       <div className="bg-gray-500/10 rounded-lg p-2 font-normal">
         Description: {eventDescription}
       </div>

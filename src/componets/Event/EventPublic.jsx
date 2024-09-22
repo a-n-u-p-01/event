@@ -4,7 +4,7 @@ import { CiCalendarDate } from "react-icons/ci";
 import { IoPersonSharp } from "react-icons/io5";
 import EventPublicSkeleton from "../Loading/EventPublicSkeleton";
 import { APP_URL } from "../util";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
 
 function EventPublic({ eventId }) {
   const [event, setEvent] = useState(null);
@@ -114,7 +114,12 @@ function EventPublic({ eventId }) {
         alt="Event"
       />
 
-      <div className="text-2xl m-2">{title || "N/A"}</div>
+      <div className="text-xl m-2">
+        <span className="bg-zinc-600/20 p-1 m-1 text-lg font-sans rounded-lg">
+          {eventId}
+        </span>
+        {title || "N/A"}
+      </div>
       <div className="bg-gray-500/10 rounded-lg p-2 font-normal">
         Description: {description || "N/A"}
       </div>
@@ -156,7 +161,10 @@ function EventPublic({ eventId }) {
               aria-expanded={isDropdownOpen}
             >
               {selectedTicket
-                ? `${selectedTicket.charAt(0).toUpperCase() + selectedTicket.slice(1)} - $${ticketPricing?.[`${selectedTicket}Price`] || "N/A"}`
+                ? `${
+                    selectedTicket.charAt(0).toUpperCase() +
+                    selectedTicket.slice(1)
+                  } - $${ticketPricing?.[`${selectedTicket}Price`] || "N/A"}`
                 : "Price"}
             </button>
             {isDropdownOpen && (

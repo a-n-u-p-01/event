@@ -15,7 +15,9 @@ function EventHosting({ loading, setLoading, hostEventId, setShowAttendees }) {
     const fetchEvent = async () => {
       try {
         setLoading(true);
-        const response = await fetch(`${APP_URL}/event/get-event/${hostEventId}`);
+        const response = await fetch(
+          `${APP_URL}/event/get-event/${hostEventId}`
+        );
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
@@ -117,7 +119,12 @@ function EventHosting({ loading, setLoading, hostEventId, setShowAttendees }) {
           alt="Event"
         />
 
-        <div className="text-2xl m-2">{title || "N/A"}</div>
+        <div className="text-xl m-2">
+          <span className="bg-zinc-600/20 p-1 m-1 text-lg font-sans rounded-lg">
+            {hostEventId}
+          </span>
+          {title || "N/A"}
+        </div>
         <div className="bg-gray-500/10 rounded-lg p-2 font-normal">
           Description: {description || "N/A"}
         </div>
@@ -149,8 +156,8 @@ function EventHosting({ loading, setLoading, hostEventId, setShowAttendees }) {
           <button
             type="button"
             onClick={() => {
-              setShowAttendees(true)
-              setLoading(true)
+              setShowAttendees(true);
+              setLoading(true);
             }}
             className="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center"
           >
