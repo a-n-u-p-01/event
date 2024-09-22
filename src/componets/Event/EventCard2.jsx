@@ -1,8 +1,9 @@
 import React from "react";
 import EventCard2Skeleton from "../Loading/EventCard2Skeleton";
 
-function EventCard2({ event, handleEventId, loading, titleLimit = 100, totalLimit = 200 }) {
+function EventCard2({ setShowFeedbacks,event, handleEventId, loading, titleLimit = 100, totalLimit = 200 }) {
   const handClick = () => {
+    setShowFeedbacks(false)
     handleEventId(event.eventId);
   };
 

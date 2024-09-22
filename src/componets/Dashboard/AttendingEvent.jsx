@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import EventAttending from "../Event/EventAttending";
 import axios from "axios";
 import { APP_URL } from "../util";
+import { motion } from "framer-motion";
 
 function AttendingEvent() {
   const [tickets, setTickets] = useState([]);
@@ -36,10 +37,15 @@ function AttendingEvent() {
     <div className="flex justify-center pr-52">
       <div className="overflow-y-scroll custom-scrollbar gap-3">
         {tickets.slice().reverse().map((ticket) => (
-          <EventAttending
-            key={ticket.ticketId} // Ensure this is unique
-            ticket={ticket}
-          />
+          <motion.div
+            key={ticket.ticketId}
+            initial={{ opacity: 0, y: 20 }} // Initial state
+            animate={{ opacity: 1, y: 0 }} // Animate to this state
+            exit={{ opacity: 0, y: -20 }} // Exit state
+            transition={{ duration: 0.3 }} // Transition duration
+          >
+            <EventAttending ticket={ticket} />
+          </motion.div>
         ))}
       </div>
     </div>

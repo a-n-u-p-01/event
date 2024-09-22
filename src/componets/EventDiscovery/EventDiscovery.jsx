@@ -10,6 +10,7 @@ const EventDiscovery = () => {
   const handleEventId = (id) => {
     setEventId(id);
   };
+  const [showFeedbacks,setShowFeedbacks] = useState(false)
 
   const location = useLocation();
   const query = new URLSearchParams(location.search).get('search');
@@ -76,7 +77,7 @@ const EventDiscovery = () => {
   return (
     <div className="bg-red-400 h-64 md:h-[50rem] flex ml-0 md:ml-24 mt-16">
       <div className="bg-white h-full w-full flex justify-center pt-7">
-        <EventPublic eventId={eventId} />
+        <EventPublic eventId={eventId} setShowFeedbacks={setShowFeedbacks} showFeedbacks={showFeedbacks}/>
       </div>
       <div className="bg-white border-l-2 border-l-red-200 pr-32 w-[80%] grid grid-cols-1 justify-items-center overflow-scroll custom-scrollbar pt-10">
         {loading ? (
@@ -89,6 +90,7 @@ const EventDiscovery = () => {
               key={index}
               event={event}
               handleEventId={handleEventId}
+              setShowFeedbacks={setShowFeedbacks}
             />
           ))
         ) : (

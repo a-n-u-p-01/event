@@ -55,12 +55,6 @@ const Login = () => {
             <div className="h-full px-4 w-full lg:w-[45%] flex flex-col items-center">
                 <button onClick={handleGoHome}>Home</button>
 
-                <div className="flex flex-col justify-center items-center">
-                    <p className="my-1 text-sm text-gray-700">
-                        Enter your email and password to access your account
-                    </p>
-                </div>
-
                 {error && <p className="text-red-500">{error}</p>} {/* Display error message */}
 
                 {loading && <p className="text-gray-700">Logging in, please wait...</p>} {/* Loading message */}

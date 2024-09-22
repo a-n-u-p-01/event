@@ -5,8 +5,9 @@ import { IoPersonSharp } from "react-icons/io5";
 import EventPublicSkeleton from "../Loading/EventPublicSkeleton";
 import { APP_URL } from "../util";
 import { useNavigate } from "react-router-dom";
+import Feedback from "./Feedbacks";
 
-function EventPublic({ eventId }) {
+function EventPublic({ eventId,setShowFeedbacks,showFeedbacks }) {
   const [event, setEvent] = useState(null);
   const [loading, setLoading] = useState(true);
   const [selectedTicket, setSelectedTicket] = useState(null);
@@ -19,9 +20,7 @@ function EventPublic({ eventId }) {
     const fetchEvent = async () => {
       setLoading(true);
       try {
-        // Simulate a loading delay
         await new Promise((resolve) => setTimeout(resolve, 300));
-
         const response = await fetch(`${APP_URL}/event/get-event/${eventId}`);
         if (!response.ok) throw new Error("Failed to fetch event.");
         const data = await response.json();
@@ -104,13 +103,12 @@ function EventPublic({ eventId }) {
       alert("Please select a ticket type before proceeding.");
     }
   };
-  console.log("---------------1");
-  console.log(imageUrl,event);
-  console.log("---------------2");
+
   const isSoldOut = bookedNumber >= capacity;
 
   return (
-    <div className="bg-gray-800/5 m-5 shadow-md w-full p-3 rounded-xl overflow-auto custom-scrollbar md:max-w-lg lg:max-w-xl">
+    showFeedbacks ? <Feedback setShowFeedbacks={setShowFeedbacks} eventId={eventId}/> :
+    <div className="flex flex-col h-full bg-gray-800/5 m-5 shadow-md w-full p-3 rounded-xl overflow-hidden">
       <img
         className="h-[30%] w-full rounded-lg object-cover object-center"
         src={imageUrl}
@@ -193,12 +191,12 @@ function EventPublic({ eventId }) {
           </>
         ) : isSoldOut ? (
           <span className="text-red-700 font-mono p-2 font-semibold text-lg">
-            Sold Out
+            Ended
           </span>
         ) : (
           <span className="text-red-700 font-mono p-2 font-semibold text-lg">
-            Ended
-          </span>
+          Sold Out
+        </span>
         )}
 
         {!isSoldOut && event.status && (
@@ -219,6 +217,22 @@ function EventPublic({ eventId }) {
             Buy Ticket
           </button>
         )}
+      </div>
+
+      {/* Feedback button with disabled state based on event status */}
+      <div className="mt-auto p-2">
+        <button
+          onClick={() => 
+            setShowFeedbacks(true)
+          }
+          type="button"
+          className={`font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center w-full ${
+            event.status ? "bg-gray-300 text-red-600 cursor-not-allowed" : "bg-blue-700 text-white hover:bg-blue-800"
+          }`}
+          disabled={event.status}
+        >
+          See Feedbacks
+        </button>
       </div>
     </div>
   );
