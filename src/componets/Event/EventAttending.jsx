@@ -39,7 +39,7 @@ function EventAttending({ ticket }) {
     <div className="bg-gray-800/5 m-5 h-[55%] shadow-md w-full p-3 rounded-xl md:max-w-lg lg:max-w-xl">
       <img
         className="h-[30%] w-full rounded-lg object-cover object-center"
-        src="https://images.unsplash.com/photo-1682407186023-12c70a4a35e0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2832&q=80"
+        src={event.imageUrl}
         alt={eventTitle}
       />
 

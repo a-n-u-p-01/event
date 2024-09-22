@@ -12,8 +12,8 @@ export const LoginButton = () => {
 
   return (
     <div className='flex justify-around gap-1'> 
-        <button onClick={handleGoLogin} className='bg-blue-300'>login</button>
-        <button onClick={handleGoRegister} className='bg-blue-300'>Register</button>
+        <button onClick={handleGoLogin} className='text-zinc-800 text-lg font-bold pr-5'>Login</button>
+        {/* <button onClick={handleGoRegister} className='bg-blue-300'>Register</button> */}
     </div>
   )
 }

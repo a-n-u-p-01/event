@@ -50,7 +50,7 @@ export const Profile = () => {
                 onClick={handleToggleDropdown}
             >
                 <CgProfile className="w-5 h-5 mr-1 rounded-full shrink-0 text-red-600" />
-                {localStorage.getItem('userName') ? localStorage.getItem('userName') : "User Name"}
+                {localStorage.getItem("userName")}
                 <svg xmlns="http://www.w3.org/2000/svg" className="w-3 fill-gray-700 inline ml-3" viewBox="0 0 24 24">
                     <path
                         fillRule="evenodd"

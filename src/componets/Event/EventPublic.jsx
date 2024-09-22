@@ -84,6 +84,7 @@ function EventPublic({ eventId }) {
     endTime,
     capacity,
     ticketPricing,
+    imageUrl,
   } = event;
 
   const handleTicketSelect = (ticketType) => {
@@ -103,14 +104,16 @@ function EventPublic({ eventId }) {
       alert("Please select a ticket type before proceeding.");
     }
   };
-
+  console.log("---------------1");
+  console.log(imageUrl,event);
+  console.log("---------------2");
   const isSoldOut = bookedNumber >= capacity;
 
   return (
     <div className="bg-gray-800/5 m-5 shadow-md w-full p-3 rounded-xl overflow-auto custom-scrollbar md:max-w-lg lg:max-w-xl">
       <img
         className="h-[30%] w-full rounded-lg object-cover object-center"
-        src="https://images.unsplash.com/photo-1682407186023-12c70a4a35e0?ixlib=rb-4.0.3&auto=format&fit=crop&w=2832&q=80"
+        src={imageUrl}
         alt="Event"
       />
 
