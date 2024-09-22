@@ -112,71 +112,71 @@ function EventHosting({ loading, setLoading, hostEventId, setShowAttendees }) {
   } = event;
 
   return (
-    <div className="bg-gray-800/5 m-5 shadow-md w-full max-w-md p-3 rounded-xl flex flex-col h-[80%]">
-      <img
-        className="w-full h-[30%] rounded-lg object-cover object-center"
-        src={imageUrl}
-        alt="Event"
-      />
+    <div className="bg-gray-800/5 m-5 shadow-md w-full max-w-md p-3 rounded-xl overflow-hidden">
+      <>
+        <img
+          className="w-full h-[30%] rounded-lg object-cover object-center"
+          src={imageUrl}
+          alt="Event"
+        />
 
-      <div className="text-xl m-2">
-        <span className="bg-zinc-600/20 p-1 m-1 text-lg font-sans rounded-lg">
-          {hostEventId}
-        </span>
-        {title || "N/A"}
-      </div>
-      <div className="bg-gray-500/10 rounded-lg p-2 font-normal">
-        Description: {description || "N/A"}
-      </div>
+        <div className="text-xl m-2">
+          <span className="bg-zinc-600/20 p-1 m-1 text-lg font-sans rounded-lg">
+            {hostEventId}
+          </span>
+          {title || "N/A"}
+        </div>
+        <div className="bg-gray-500/10 rounded-lg p-2 font-normal">
+          Description: {description || "N/A"}
+        </div>
 
-      <div className="flex items-center justify-between pt-4 font-sans font-normal">
-        <span className="flex items-center gap-1">
-          <IoPersonSharp /> {organizer?.fullName || "N/A"}
-        </span>
-        <span className="flex items-center gap-1">
-          <IoLocation /> {location || "N/A"}
-        </span>
-      </div>
+        <div className="flex items-center justify-between pt-4 font-sans font-normal">
+          <span className="flex items-center gap-1">
+            <IoPersonSharp /> {organizer?.fullName || "N/A"}
+          </span>
+          <span className="flex items-center gap-1">
+            <IoLocation /> {location || "N/A"}
+          </span>
+        </div>
 
-      <div className="flex items-center justify-between pt-4 font-sans font-normal">
-        <span className="flex items-center gap-1">
-          <CiCalendarDate /> Start: {startTime || "N/A"}
-        </span>
-        <span className="flex items-center gap-1">
-          <CiCalendarDate /> End: {endTime || "N/A"}
-        </span>
-      </div>
+        <div className="flex items-center justify-between pt-4 font-sans font-normal">
+          <span className="flex items-center gap-1">
+            <CiCalendarDate /> Start: {startTime || "N/A"}
+          </span>
+          <span className="flex items-center gap-1">
+            <CiCalendarDate /> End: {endTime || "N/A"}
+          </span>
+        </div>
 
-      <div className="flex items-center justify-between pt-4 font-sans font-normal">
-        <span>Tickets: {capacity || "N/A"}</span>
-        <span>Booked: {bookedNumber || "0"}</span>
-      </div>
+        <div className="flex items-center justify-between pt-4 font-sans font-normal">
+          <span>Tickets: {capacity || "N/A"}</span>
+          <span>Booked: {bookedNumber || "0"}</span>
+        </div>
 
-      <div className="flex-grow" /> {/* This pushes the buttons to the bottom */}
-
-      <div className="font-normal flex justify-between pt-5">
-        <button
-          type="button"
-          onClick={() => {
-            setShowAttendees(true);
-            setLoading(true);
-          }}
-          className="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center"
-        >
-          See Attendees
-        </button>
-        {!eventStatus ? (
-          <span className="text-red-500">Closed</span>
-        ) : (
+        <div className="font-normal flex justify-between pt-5">
           <button
             type="button"
-            onClick={handleCloseEvent}
+            onClick={() => {
+              setShowAttendees(true);
+              setLoading(true);
+            }}
             className="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center"
           >
-            Close Event
+            See Attendees
           </button>
-        )}
-      </div>
+          {!eventStatus ? (
+            <span className="text-red-500">Closed</span>
+          ) : (
+            <button
+              type="button"
+              onClick={handleCloseEvent}
+              className="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center"
+            >
+              Close Event
+            </button>
+          )}
+        </div>
+      </>
     </div>
   );
 }

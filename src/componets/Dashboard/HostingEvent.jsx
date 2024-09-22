@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { motion } from "framer-motion";
 import EventCard2 from "../Event/EventCard2";
 import EventHosting from "../Event/EventHosting";
 import { APP_URL } from "../util";
@@ -24,16 +25,13 @@ function HostingEvent() {
         });
 
         const fetchedEvents = response.data.events;
-
-        // Reverse the fetched events and set state
         const reversedEvents = fetchedEvents.reverse();
         setEvents(reversedEvents);
 
-        // Set hostEventId to the ID of the first event in the reversed order
         if (reversedEvents.length > 0) {
           setHostEventId(reversedEvents[0].eventId);
         }
-        setTimeout(() => setLoading(false), 400);
+        setTimeout(() => setLoading(false), 500);
       } catch (err) {
         console.error("Error fetching events:", err);
       }
@@ -43,25 +41,41 @@ function HostingEvent() {
   }, []);
 
   return (
-    <div className=" flex justify-between w-full h-screen">
-      <div className="overflow-y-scroll overflow-x-hidden custom-scrollbar p-5 h-full pl-12">
+    <div className="flex justify-between w-full h-screen">
+      <motion.div
+        className="overflow-y-scroll overflow-x-hidden custom-scrollbar p-5 h-full pl-12"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
         {events.length > 0 ? (
           events.map((event) => (
-            <EventCard3
+            <motion.div
               key={event.eventId}
-              event={event}
-              setHostEventId={setHostEventId}
-              setShowAttendees={setShowAttendees}
-              loading={loading}
-            />
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.3 }}
+            >
+              <EventCard3
+                event={event}
+                setHostEventId={setHostEventId}
+                setShowAttendees={setShowAttendees}
+                loading={loading}
+              />
+            </motion.div>
           ))
         ) : (
-          <p className="text-gray-500 transition-opacity duration-300 ease-in-out opacity-0">
-          No Event found.
-        </p>
+          <motion.p
+            className="text-gray-500 transition-opacity duration-300 ease-in-out"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+          >
+            No Event found.
+          </motion.p>
         )}
-      </div>
-      <div className="flex justify-center pr-20 h-ful w-[60%]">
+      </motion.div>
+      <div className="flex justify-center pr-20 h-full w-[60%]">
         {showAttendees ? (
           <Attendees
             setShowAttendees={setShowAttendees}

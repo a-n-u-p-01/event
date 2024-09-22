@@ -4,8 +4,6 @@ import Menu from "./Menu";
 import HostEvent from "./HostEvent";
 import HostingEvent from "./HostingEvent";
 import AttendingEvent from "./AttendingEvent";
-import SavedEvent from "./SavedEvent";
-import PastEvent from "./PastEvent";
 import ProfileDetails from "./ProfileDetails";
 
 const Dashboard = () => {

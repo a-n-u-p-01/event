@@ -27,21 +27,20 @@ function AttendingEvent() {
     fetchTickets();
   }, []);
 
+  // Check if there are no tickets
+  if (tickets.length === 0) {
+    return <div className="text-center text-gray-500">You do not have any tickets.</div>;
+  }
+
   return (
     <div className="flex justify-center pr-52">
       <div className="overflow-y-scroll custom-scrollbar gap-3">
-        {tickets.length > 0 ? (
-          tickets.slice().reverse().map((ticket) => (
-            <EventAttending
-              key={ticket.ticketId} // Ensure this is unique
-              ticket={ticket}
-            />
-          ))
-        ) : (
-          <p className="text-gray-500 transition-opacity duration-300 ease-in-out opacity-0">
-          No Event found.
-        </p>
-        )}
+        {tickets.slice().reverse().map((ticket) => (
+          <EventAttending
+            key={ticket.ticketId} // Ensure this is unique
+            ticket={ticket}
+          />
+        ))}
       </div>
     </div>
   );

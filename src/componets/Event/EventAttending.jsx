@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { IoLocation } from "react-icons/io5";
 import { CiCalendarDate } from "react-icons/ci";
 import { IoPersonSharp } from "react-icons/io5";
+import FeedBackForm from "../User/FeedBackForm";
 
 function EventAttending({ ticket }) {
   // Verify if ticket is null or undefined
@@ -22,21 +23,21 @@ function EventAttending({ ticket }) {
   const eventLocation = event?.location || "Unknown Location";
   const startTime = event?.startTime ? new Date(event.startTime).toLocaleString() : "No Start Time";
   const endTime = event?.endTime ? new Date(event.endTime).toLocaleString() : "No End Time";
-  const status = event.status;
+  const status = event.status; // assuming this is a boolean
   const ticketType = ticket.ticketType;
-  
 
   // Mapping ticket types to their respective descriptions and colors
   const ticketTypeMap = {
-    1: { label: "Basic", color: "text-yellow-600" },  // Gold color
-    2: { label: "Standard", color: "text-gray-400" }, // Silver color
-    3: { label: "Premium", color: "text-yellow-300" }, // Bronze color
+    1: { label: "Basic", color: "text-yellow-600" },
+    2: { label: "Standard", color: "text-gray-400" },
+    3: { label: "Premium", color: "text-yellow-300" },
   };
 
   const ticketTypeInfo = ticketTypeMap[ticketType] || { label: "Unknown", color: "text-gray-500" };
 
+
   return (
-    <div className="bg-gray-800/5 m-5 h-[55%] shadow-md w-full p-3 rounded-xl md:max-w-lg lg:max-w-xl">
+    <div className="bg-gray-800/5 m-5 h-[70%] shadow-md w-full p-3 rounded-xl md:max-w-lg lg:max-w-xl">
       <img
         className="h-[30%] w-full rounded-lg object-cover object-center"
         src={event.imageUrl}
@@ -44,10 +45,11 @@ function EventAttending({ ticket }) {
       />
 
       <div className="text-xl m-2">
-      <span className="bg-zinc-600/20  mr-2 text-sm font-sans rounded-lg">
-            {event.eventId}
-          </span>
-        {eventTitle}</div>
+        <span className="bg-zinc-600/20 mr-2 text-sm font-sans rounded-lg">
+          {event.eventId}
+        </span>
+        {eventTitle}
+      </div>
       <div className="bg-gray-500/10 rounded-lg p-2 font-normal">
         Description: {eventDescription}
       </div>
@@ -78,6 +80,7 @@ function EventAttending({ ticket }) {
           {ticketTypeInfo.label}
         </span>
       </div>
+      <FeedBackForm disabled={status} eventId={event.eventId} />
     </div>
   );
 }
