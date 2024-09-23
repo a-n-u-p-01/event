@@ -37,7 +37,7 @@ function EventAttending({ ticket }) {
 
 
   return (
-    <div className="bg-gray-800/5 m-5 h-[70%] shadow-md w-full p-3 rounded-xl md:max-w-lg lg:max-w-xl">
+    <div className="bg-gray-800/5 m-5 h-[70%] shadow-md  bg p-3 rounded-xl ">
       <img
         className="w-full h-32 rounded-lg object-cover object-center"
         src={event.imageUrl}
