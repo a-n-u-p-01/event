@@ -10,7 +10,7 @@ const EventDiscovery = () => {
   const handleEventId = (id) => {
     setEventId(id);
   };
-  const [showFeedbacks,setShowFeedbacks] = useState(false)
+  const [showFeedbacks, setShowFeedbacks] = useState(false);
 
   const location = useLocation();
   const query = new URLSearchParams(location.search).get('search');
@@ -18,7 +18,7 @@ const EventDiscovery = () => {
   const [filteredEvents, setFilteredEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const isFirstLoad = useRef(true);
-  const navigate = useNavigate(); // Initialize navigate
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (isFirstLoad.current) {
@@ -58,16 +58,51 @@ const EventDiscovery = () => {
   
   useEffect(() => {
     if (query) {
-      const filtered = events.filter(event =>
-        event.title.toLowerCase().includes(query.toLowerCase())
-      );
+      const searchWords = query.toLowerCase().split(/\s+/);
+      const numberRegex = /^\d+$/; // Check for numbers
+
+      const filtered = events.filter(event => {
+        let matchCount = 0;
+
+        // Check title and description for each search word
+        const titleMatch = searchWords.some(word => {
+          if (event.title.toLowerCase().includes(word)) {
+            matchCount++;
+            return true;
+          }
+          return false;
+        });
+
+        const descriptionMatch = searchWords.some(word => {
+          if (event.description.toLowerCase().includes(word)) {
+            matchCount++;
+            return true;
+          }
+          return false;
+        });
+
+        // If query is a single number, check if it matches the event ID
+        const isSingleNumber = searchWords.length === 1 && numberRegex.test(searchWords[0]);
+        const matchesEventId = isSingleNumber && event.eventId.toString() === searchWords[0];
+
+        return matchCount > 0 || matchesEventId; // Return true if there's a match
+      });
+
+      // Sort events by match count (higher count first)
+      filtered.sort((a, b) => {
+        const aMatches = a.title.split(' ').filter(word => searchWords.includes(word)).length +
+                         a.description.split(' ').filter(word => searchWords.includes(word)).length;
+        const bMatches = b.title.split(' ').filter(word => searchWords.includes(word)).length +
+                         b.description.split(' ').filter(word => searchWords.includes(word)).length;
+        return bMatches - aMatches; // Sort descending
+      });
+
       setFilteredEvents(filtered);
     } else {
       setFilteredEvents(events);
     }
   }, [query, events]);
 
-  // Effect to update URL when eventId changes
   useEffect(() => {
     if (eventId) {
       navigate(`?id=${eventId}`, { replace: true });
