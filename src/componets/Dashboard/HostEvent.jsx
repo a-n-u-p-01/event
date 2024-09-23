@@ -1,19 +1,12 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { APP_URL } from "../util";
 import { useNavigate } from "react-router-dom";
 import Success from "../assets/Success";
 
-function HostEvent({handleSetOption}) {
-  const handleCreated = (e) => {
-    setIsCreated(e);
-  };
-
-
-
-  const [isCreated,setIsCreated] = useState(false) 
-
+function HostEvent({ handleSetOption }) {
+  const [isCreated, setIsCreated] = useState(false);
+  const [isCreating, setIsCreating] = useState(false); // New state for creating event
   const navigate = useNavigate();
   const [event, setEvent] = useState({
     title: "",
@@ -49,22 +42,26 @@ function HostEvent({handleSetOption}) {
     }));
   };
 
-console.log(event);
+  const handleCreated = (e) => {
+    setIsCreated(e);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsCreating(true); // Set creating state to true
     try {
-
-      if(event.title.length < 5 ){
-        alert("Enter minimum 5 word for title.")
-        return
+      if (event.title.length < 5) {
+        alert("Enter minimum 5 words for title.");
+        setIsCreating(false); // Reset creating state
+        return;
       }
 
-      if(event.description.length < 10 ){
-        alert("Enter minimum 10 word for description.")
-        return
+      if (event.description.length < 10) {
+        alert("Enter minimum 10 words for description.");
+        setIsCreating(false); // Reset creating state
+        return;
       }
-     
+
       const response = await axios.post(
         `${APP_URL}/event/create-event`,
         event,
@@ -89,26 +86,22 @@ console.log(event);
           premiumPrice: "",
         },
       });
-   
-      handleCreated(true)
-      
+
+      handleCreated(true);
     } catch (error) {
       console.error("Error creating event:", error);
+    } finally {
+      setIsCreating(false); // Reset creating state after submission
     }
   };
 
-
   return (
     <div className="h-[50%] w-[80%]">
-      <form className="bg-white  px-8 pt-6 pb-8 mb-4  text-gray-700 font-sans" onSubmit={handleSubmit}>
+      <form className="bg-white px-8 pt-6 pb-8 mb-4 text-gray-700 font-sans" onSubmit={handleSubmit}>
         <h2 className="block font-sans text-3xl antialiased font-semibold leading-snug tracking-normal text-red-500">Create Event</h2>
 
+        {/* Form Fields */}
         <div className="mb-4">
-          <label
-            className="block text-gray-700 font-normal "
-            htmlFor="title"
-          >
-          </label>
           <input
             id="title"
             type="text"
@@ -121,12 +114,6 @@ console.log(event);
         </div>
 
         <div className="mb-4">
-          <label
-            className="block text-gray-700 font-normal"
-            htmlFor="description"
-          >
-
-          </label>
           <textarea
             id="description"
             name="description"
@@ -138,11 +125,6 @@ console.log(event);
         </div>
 
         <div className="mb-4">
-          <label
-            className="block text-gray-700 font-normal"
-            htmlFor="location"
-          >
-          </label>
           <input
             id="location"
             type="text"
@@ -155,12 +137,6 @@ console.log(event);
         </div>
 
         <div className="mb-4">
-          <label
-            className="block text-gray-700 font-normal"
-            htmlFor="startTime"
-          >
-            Start Time
-          </label>
           <input
             id="startTime"
             type="datetime-local"
@@ -172,12 +148,6 @@ console.log(event);
         </div>
 
         <div className="mb-4">
-          <label
-            className="block text-gray-700 font-normal"
-            htmlFor="endTime"
-          >
-            End Time
-          </label>
           <input
             id="endTime"
             type="datetime-local"
@@ -189,12 +159,6 @@ console.log(event);
         </div>
 
         <div className="mb-4">
-          <label
-            className="block text-gray-700 font-normal"
-            htmlFor="capacity"
-          >
-
-          </label>
           <input
             id="capacity"
             type="number"
@@ -210,12 +174,7 @@ console.log(event);
           <h3 className="text-lg font-semibold mb-2">Ticket Pricing</h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
-              <label
-                className="block text-gray-700 font-normal"
-                htmlFor="basicPrice"
-              >
-                Basic Price
-              </label>
+              <label className="block text-gray-700 font-normal" htmlFor="basicPrice">Basic Price</label>
               <input
                 id="basicPrice"
                 type="number"
@@ -227,12 +186,7 @@ console.log(event);
               />
             </div>
             <div>
-              <label
-                className="block text-gray-700 font-normal"
-                htmlFor="standardPrice"
-              >
-                Standard Price
-              </label>
+              <label className="block text-gray-700 font-normal" htmlFor="standardPrice">Standard Price</label>
               <input
                 id="standardPrice"
                 type="number"
@@ -244,12 +198,7 @@ console.log(event);
               />
             </div>
             <div>
-              <label
-                className="block text-gray-700 font-normal"
-                htmlFor="premiumPrice"
-              >
-                Premium Price
-              </label>
+              <label className="block text-gray-700 font-normal" htmlFor="premiumPrice">Premium Price</label>
               <input
                 id="premiumPrice"
                 type="number"
@@ -267,13 +216,13 @@ console.log(event);
           <button
             type="submit"
             className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            disabled={isCreating} // Disable button while creating
           >
-            Create Event
+            {isCreating ? "Creating..." : "Create Event"}
           </button>
         </div>
       </form>
-    {isCreated && <Success handleCreated={handleCreated} handleSetOption={handleSetOption}/>}
-
+      {isCreated && <Success handleCreated={handleCreated} handleSetOption={handleSetOption} />}
     </div>
   );
 }

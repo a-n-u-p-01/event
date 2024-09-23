@@ -6,6 +6,7 @@ import HostingEvent from "./HostingEvent";
 import AttendingEvent from "./AttendingEvent";
 import ProfileDetails from "./ProfileDetails";
 
+
 const Dashboard = () => {
   const [option, setOption] = useState("profile");
   const location = useLocation();

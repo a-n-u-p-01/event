@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 
 function AttendingEvent() {
   const [tickets, setTickets] = useState([]);
+  const [loading, setLoading] = useState(true); // New loading state
 
   useEffect(() => {
     const fetchTickets = async () => {
@@ -19,14 +20,20 @@ function AttendingEvent() {
 
         const fetchedTickets = response.data;
         setTickets(fetchedTickets);
-
       } catch (err) {
         console.error("Error fetching events:", err);
+      } finally {
+        setLoading(false); // Set loading to false after fetching
       }
     };
 
     fetchTickets();
   }, []);
+
+  // Show loading indicator while fetching data
+  if (loading) {
+    return <div className="text-center text-gray-500">Loading...</div>;
+  }
 
   // Check if there are no tickets
   if (tickets.length === 0) {

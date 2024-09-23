@@ -10,6 +10,7 @@ function EventHosting({ loading, setLoading, hostEventId, setShowAttendees }) {
   const [event, setEvent] = useState(null);
   const [bookedNumber, setBookedNumber] = useState(0);
   const [eventStatus, setEventStatus] = useState(true);
+  const [closing, setClosing] = useState(false); // New state variable
 
   useEffect(() => {
     const fetchEvent = async () => {
@@ -27,7 +28,7 @@ function EventHosting({ loading, setLoading, hostEventId, setShowAttendees }) {
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
-        setTimeout(() => setLoading(false), 400);
+        setTimeout(() => setLoading(false), 300);
       }
     };
 
@@ -65,6 +66,8 @@ function EventHosting({ loading, setLoading, hostEventId, setShowAttendees }) {
       return;
     }
 
+    setClosing(true); // Set closing state to true
+
     try {
       const response = await fetch(
         `${APP_URL}/event/change-status/${hostEventId}`,
@@ -83,6 +86,8 @@ function EventHosting({ loading, setLoading, hostEventId, setShowAttendees }) {
       setEventStatus(false);
     } catch (error) {
       console.error("Error closing event:", error);
+    } finally {
+      setClosing(false); // Reset closing state after completion
     }
   };
 
@@ -166,6 +171,8 @@ function EventHosting({ loading, setLoading, hostEventId, setShowAttendees }) {
           </button>
           {!eventStatus ? (
             <span className="text-red-500">Closed</span>
+          ) : closing ? ( // Conditional rendering for closing text
+            <span className="text-yellow-500">Closing...</span>
           ) : (
             <button
               type="button"
