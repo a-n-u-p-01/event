@@ -12,7 +12,7 @@ function Attendee({ attendee, ticketType }) {
   const { label, textColor } = ticketInfo[ticketType] || { label: 'Unknown', textColor: 'text-gray-300' };
 
   return (
-    <div className={`bg-gray-200 text-gray-800 font-mono h-10 w-[80%] flex justify-between rounded-3xl p-2 pl-4 pr-4`}>
+    <div className={`bg-gray-200 text-gray-800 font-mono h-8 w-[80%] flex justify-between rounded-lg p-2 pl-4 pr-4`}>
       <span>{attendee.fullName}</span>
       <span className={textColor}>{label}</span>
     </div>

@@ -1,10 +1,14 @@
 import React from "react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 import EventCard2Skeleton from "../Loading/EventCard2Skeleton";
 
-function EventCard2({ setShowFeedbacks,event, handleEventId, loading, titleLimit = 100, totalLimit = 200 }) {
+function EventCard2({ setShowFeedbacks, event, handleEventId, loading, titleLimit = 100, totalLimit = 200 }) {
+  const navigate = useNavigate(); // Initialize navigate
+
   const handClick = () => {
-    setShowFeedbacks(false)
+    setShowFeedbacks(false);
     handleEventId(event.eventId);
+    navigate(`?id=${event.eventId}`, { replace: true }); // Update URL on click
   };
 
   const truncateText = (text, charLimit) => {
@@ -41,7 +45,7 @@ function EventCard2({ setShowFeedbacks,event, handleEventId, loading, titleLimit
         </p>
       </div>
       <div className="flex justify-between p-2">
-        <span className="text-red-600">{!event.status&&"Ended"}</span>
+        <span className="text-red-600">{!event.status && "Ended"}</span>
         <button
           onClick={handClick}
           className="rounded-md bg-slate-800 py-1 px-3 border border-transparent text-center text-sm text-white transition-all shadow-md hover:shadow-lg focus:bg-slate-700 focus:shadow-none active:bg-slate-700 hover:bg-slate-700 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"

@@ -18,12 +18,13 @@ const EventDiscovery = () => {
   const [filteredEvents, setFilteredEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const isFirstLoad = useRef(true);
+  const [hasFetched, setHasFetched] = useState(false); // New state to track data fetching
   const navigate = useNavigate();
 
   useEffect(() => {
     if (isFirstLoad.current) {
       setLoading(true);
-  
+
       const timer = setTimeout(() => {
         fetch(`${APP_URL}/event/get-all`)
           .then(response => {
@@ -36,7 +37,7 @@ const EventDiscovery = () => {
             const reversedEvents = data.reverse();
             setEvents(reversedEvents);
             console.log("Fetched events (reversed):", reversedEvents);
-  
+
             if (reversedEvents.length > 0) {
               setEventId(reversedEvents[0].eventId);
             }
@@ -46,25 +47,25 @@ const EventDiscovery = () => {
           })
           .finally(() => {
             setLoading(false);
+            setHasFetched(true); // Set hasFetched to true after fetching data
             isFirstLoad.current = false;
           });
       }, 300);
-  
+
       return () => clearTimeout(timer);
     } else {
       setLoading(false);
     }
   }, []);
-  
+
   useEffect(() => {
     if (query) {
       const searchWords = query.toLowerCase().split(/\s+/);
-      const numberRegex = /^\d+$/; // Check for numbers
+      const numberRegex = /^\d+$/;
 
       const filtered = events.filter(event => {
         let matchCount = 0;
 
-        // Check title and description for each search word
         const titleMatch = searchWords.some(word => {
           if (event.title.toLowerCase().includes(word)) {
             matchCount++;
@@ -81,20 +82,18 @@ const EventDiscovery = () => {
           return false;
         });
 
-        // If query is a single number, check if it matches the event ID
         const isSingleNumber = searchWords.length === 1 && numberRegex.test(searchWords[0]);
         const matchesEventId = isSingleNumber && event.eventId.toString() === searchWords[0];
 
-        return matchCount > 0 || matchesEventId; // Return true if there's a match
+        return matchCount > 0 || matchesEventId;
       });
 
-      // Sort events by match count (higher count first)
       filtered.sort((a, b) => {
         const aMatches = a.title.split(' ').filter(word => searchWords.includes(word)).length +
                          a.description.split(' ').filter(word => searchWords.includes(word)).length;
         const bMatches = b.title.split(' ').filter(word => searchWords.includes(word)).length +
                          b.description.split(' ').filter(word => searchWords.includes(word)).length;
-        return bMatches - aMatches; // Sort descending
+        return bMatches - aMatches;
       });
 
       setFilteredEvents(filtered);
@@ -102,12 +101,6 @@ const EventDiscovery = () => {
       setFilteredEvents(events);
     }
   }, [query, events]);
-
-  useEffect(() => {
-    if (eventId) {
-      navigate(`?id=${eventId}`, { replace: true });
-    }
-  }, [eventId, navigate]);
 
   return (
     <div className="bg-red-400 h-64 md:h-[50rem] flex ml-0 md:ml-24 mt-16">
