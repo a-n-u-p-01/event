@@ -62,9 +62,9 @@ const Register = () => {
     };
 
     return (
-        <motion.div className="bg-white w-full h-full flex justify-center p-36">
+        <motion.div className="bg-white font-thin w-full h-full flex justify-center p-36">
             <div className="h-full px-4 w-full lg:w-[45%] flex flex-col items-center">
-                <button onClick={handleGoHome}>Go Home</button>
+                <button onClick={handleGoHome} className="font-semibold">Go Home</button>
 
                 {error && <p className="text-red-500">{error}</p>} 
 

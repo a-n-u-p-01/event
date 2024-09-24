@@ -10,53 +10,41 @@ function EventHosting({ loading, setLoading, hostEventId, setShowAttendees }) {
   const [event, setEvent] = useState(null);
   const [bookedNumber, setBookedNumber] = useState(0);
   const [eventStatus, setEventStatus] = useState(true);
-  const [closing, setClosing] = useState(false); // New state variable
+  const [closing, setClosing] = useState(false);
+  const [isDataLoading, setIsDataLoading] = useState(true); // New loading state for data fetching
 
   useEffect(() => {
-    const fetchEvent = async () => {
+    const fetchEventAndTickets = async () => {
+      setLoading(true);
+      setIsDataLoading(true); // Set data loading to true at the beginning
+
       try {
-        setLoading(true);
-        const response = await fetch(
-          `${APP_URL}/event/get-event/${hostEventId}`
-        );
-        if (!response.ok) {
+        const eventResponse = await fetch(`${APP_URL}/event/get-event/${hostEventId}`);
+        if (!eventResponse.ok) {
           throw new Error("Network response was not ok");
         }
-        const data = await response.json();
-        setEvent(data.event);
-        setEventStatus(data.event.status);
+        const eventData = await eventResponse.json();
+        setEvent(eventData.event);
+        setEventStatus(eventData.event.status);
+
+        const ticketsResponse = await fetch(`${APP_URL}/ticket/get-no-ticket-booked/${hostEventId}`);
+        if (!ticketsResponse.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const bookedData = await ticketsResponse.json();
+        setBookedNumber(bookedData);
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
-        setTimeout(() => setLoading(false), 300);
+        setIsDataLoading(false); // Set data loading to false when all fetching is complete
+        setLoading(false); // Set loading to false
       }
     };
 
     if (hostEventId) {
-      fetchEvent();
+      fetchEventAndTickets();
     }
-  }, [hostEventId]);
-
-  useEffect(() => {
-    const fetchBookedTickets = async () => {
-      try {
-        const response = await fetch(
-          `${APP_URL}/ticket/get-no-ticket-booked/${hostEventId}`
-        );
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        const data = await response.json();
-        setBookedNumber(data);
-      } catch (error) {
-        console.error("Error fetching booked tickets:", error);
-      }
-    };
-
-    if (hostEventId) {
-      fetchBookedTickets();
-    }
-  }, [hostEventId]);
+  }, [hostEventId, setLoading]);
 
   const handleCloseEvent = async () => {
     const token = localStorage.getItem("token");
@@ -65,33 +53,28 @@ function EventHosting({ loading, setLoading, hostEventId, setShowAttendees }) {
       console.error("No token found");
       return;
     }
-
-    setClosing(true); // Set closing state to true
-
+    setClosing(true);
     try {
-      const response = await fetch(
-        `${APP_URL}/event/change-status/${hostEventId}`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response = await fetch(`${APP_URL}/event/change-status/${hostEventId}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
 
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
+      setClosing(false);
       setEventStatus(false);
     } catch (error) {
       console.error("Error closing event:", error);
-    } finally {
-      setClosing(false); // Reset closing state after completion
     }
   };
 
-  if (loading) {
+  // Show skeleton only while data is being loaded
+  if (isDataLoading) {
     return <EventHostingSkeleton />;
   }
 
@@ -113,7 +96,7 @@ function EventHosting({ loading, setLoading, hostEventId, setShowAttendees }) {
     startTime,
     endTime,
     capacity,
-    imageUrl
+    imageUrl,
   } = event;
 
   return (
@@ -124,7 +107,6 @@ function EventHosting({ loading, setLoading, hostEventId, setShowAttendees }) {
           src={imageUrl}
           alt="Event"
         />
-
         <div className="text-xl m-2">
           <span className="bg-zinc-600/20 p-1 m-1 text-lg font-sans rounded-lg">
             {hostEventId}
@@ -134,7 +116,6 @@ function EventHosting({ loading, setLoading, hostEventId, setShowAttendees }) {
         <div className="bg-gray-500/10 rounded-lg p-2 font-normal">
           Description: {description || "N/A"}
         </div>
-
         <div className="flex items-center justify-between pt-4 font-sans font-normal">
           <span className="flex items-center gap-1">
             <IoPersonSharp /> {organizer?.fullName || "N/A"}
@@ -143,7 +124,6 @@ function EventHosting({ loading, setLoading, hostEventId, setShowAttendees }) {
             <IoLocation /> {location || "N/A"}
           </span>
         </div>
-
         <div className="flex items-center justify-between pt-4 font-sans font-normal">
           <span className="flex items-center gap-1">
             <CiCalendarDate /> Start: {startTime || "N/A"}
@@ -152,12 +132,10 @@ function EventHosting({ loading, setLoading, hostEventId, setShowAttendees }) {
             <CiCalendarDate /> End: {endTime || "N/A"}
           </span>
         </div>
-
         <div className="flex items-center justify-between pt-4 font-sans font-normal">
           <span>Tickets: {capacity || "N/A"}</span>
           <span>Booked: {bookedNumber || "0"}</span>
         </div>
-
         <div className="font-normal flex justify-between pt-5">
           <button
             type="button"
@@ -171,7 +149,7 @@ function EventHosting({ loading, setLoading, hostEventId, setShowAttendees }) {
           </button>
           {!eventStatus ? (
             <span className="text-red-500">Closed</span>
-          ) : closing ? ( // Conditional rendering for closing text
+          ) : closing ? (
             <span className="text-yellow-500">Closing...</span>
           ) : (
             <button

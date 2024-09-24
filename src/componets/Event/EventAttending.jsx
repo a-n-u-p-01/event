@@ -39,11 +39,11 @@ function EventAttending({ ticket }) {
         {eventTitle}
       </div>
       <div className="bg-gray-500/10 text-sm font-normal rounded-lg p-2">Description: {eventDescription}</div>
-      <div className="flex justify-between pt-4">
+      <div className="flex justify-between font-normal pt-4">
         <span className="flex items-center gap-1"><IoPersonSharp /> {userName} (Host)</span>
         <span className="flex items-center gap-1"><IoLocation /> {eventLocation}</span>
       </div>
-      <div className="flex justify-between pt-4">
+      <div className="flex justify-between font-normal pt-4">
         <span className="flex items-center gap-1"><CiCalendarDate /> {startTime}</span>
         <span className="flex items-center gap-1"><CiCalendarDate /> {endTime}</span>
       </div>

@@ -37,7 +37,7 @@ export const Profile = () => {
             localStorage.removeItem('userId');
             console.log( localStorage.getItem('userId'))
             navigate('/login');
-        }, 1000); 
+        }, 500); 
     };
 
     useEffect(() => {
@@ -55,7 +55,7 @@ export const Profile = () => {
 
     return (
         logginOut ?
-        <div>Logging out, please wait...</div> :
+        <div className='font-normal'>Logging out, please wait...</div> :
         <div className="relative font-[sans-serif] w-max mx-auto" ref={dropdownRef}>
            
             <button

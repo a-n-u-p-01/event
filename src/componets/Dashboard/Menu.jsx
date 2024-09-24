@@ -9,7 +9,7 @@ const Menu = ({ currentOption, handleSetOption }) => {
                 </h5>
             </div>
             <nav className="flex flex-col gap-1 p-2 font-sans text-base font-normal text-blue-gray-700">
-                {['profile', 'hosting', 'booked', 'hostEvent'].map((option) => (
+                {['profile', 'hosting', 'booked', 'hostEvent','hosted'].map((option) => (
                     <div
                         key={option}
                         role="button"

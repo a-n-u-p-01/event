@@ -1,22 +1,17 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
-import EventCard2 from "../Event/EventCard2";
-import EventHosting from "../Event/EventHosting";
 import { APP_URL } from "../util";
-import EventCard3 from "../Event/EventCard3";
-import Attendees from "../User/Attendees";
+import EventCard4 from "../Event/EventCard4";
 
-function HostingEvent() {
+function HostedEvent() {
   const [events, setEvents] = useState([]);
-  const [hostEventId, setHostEventId] = useState();
-  const [showAttendees, setShowAttendees] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        setLoading(true);
         const response = await axios.get(`${APP_URL}/event/get-events`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -25,15 +20,15 @@ function HostingEvent() {
         });
 
         const fetchedEvents = response.data.events;
-        const reversedEvents = fetchedEvents.reverse();
-        setEvents(reversedEvents);
+        const filteredEvents = fetchedEvents.filter(event => event.status === false);
+        const reversedEvents = filteredEvents.reverse();
 
-        if (reversedEvents.length > 0) {
-          setHostEventId(reversedEvents[0].eventId);
-        }
-        setTimeout(() => setLoading(false), 500);
+        setEvents(reversedEvents);
+        setLoading(false);
       } catch (err) {
         console.error("Error fetching events:", err);
+        setError("Failed to fetch events.");
+        setLoading(false);
       }
     };
 
@@ -48,7 +43,11 @@ function HostingEvent() {
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
       >
-        {events.length > 0 ? (
+        {loading ? (
+          <p>Loading...</p>
+        ) : error ? (
+          <p className="text-red-500">{error}</p>
+        ) : events.length > 0 ? (
           events.map((event) => (
             <motion.div
               key={event.eventId}
@@ -56,11 +55,9 @@ function HostingEvent() {
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.3 }}
             >
-              <EventCard3
+              <EventCard4
                 event={event}
-                setHostEventId={setHostEventId}
-                setShowAttendees={setShowAttendees}
-                loading={loading}
+                setEvents={setEvents} // Make sure this is correct
               />
             </motion.div>
           ))
@@ -75,25 +72,8 @@ function HostingEvent() {
           </motion.p>
         )}
       </motion.div>
-      <div className="flex justify-center pr-20 h-full w-[60%]">
-        {showAttendees ? (
-          <Attendees
-            setShowAttendees={setShowAttendees}
-            hostEventId={hostEventId}
-            loading={loading}
-            setLoading={setLoading}
-          />
-        ) : (
-          <EventHosting
-            loading={loading}
-            setLoading={setLoading}
-            hostEventId={hostEventId}
-            setShowAttendees={setShowAttendees}
-          />
-        )}
-      </div>
     </div>
   );
 }
 
-export default HostingEvent;
+export default HostedEvent;

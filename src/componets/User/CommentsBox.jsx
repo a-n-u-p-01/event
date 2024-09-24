@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { FaUserCircle } from 'react-icons/fa';
-import axios from 'axios'; // Ensure axios is installed
+import axios from 'axios';
 import { APP_URL } from '../util';
 
 function CommentsBox({ eventId }) {
@@ -19,7 +19,10 @@ function CommentsBox({ eventId }) {
     };
 
     fetchComments();
-  }, [eventId]); // Fetch comments when eventId changes
+    const intervalId = setInterval(fetchComments, 2000); // Poll every 2 seconds
+
+    return () => clearInterval(intervalId); // Cleanup on unmount
+  }, [eventId]);
 
   const handleCommentChange = (e) => {
     setComment(e.target.value);
@@ -28,43 +31,37 @@ function CommentsBox({ eventId }) {
   const handleCommentSubmit = async (e) => {
     e.preventDefault();
 
-    // Check if token is present in localStorage
     const token = localStorage.getItem('token');
     if (!token) {
       setErrorMessage('You must be logged in to add a comment.');
-      setTimeout(() => setErrorMessage(''), 1500); // Clear message after 1.5 seconds
+      setTimeout(() => setErrorMessage(''), 1500);
       return;
     }
 
     if (comment.trim()) {
       const newComment = {
-        comment: comment,
+        comment,
         userName: localStorage.getItem('userName') || 'Unknown',
-        eventId: eventId,
+        eventId,
         createdAt: new Date().toISOString(),
       };
 
-      // Optimistically update the comments list
-      setCommentsList((prevComments) => [newComment, ...prevComments]);
-      setComment(''); // Clear the input
-
       try {
         await axios.post(`${APP_URL}/comment`, newComment, {
-          headers: { Authorization: `Bearer ${token}` } // Include token in the request headers
+          headers: { Authorization: `Bearer ${token}` },
         });
-        // Optionally, refetch comments to ensure the latest data
-        // const response = await axios.get(`${APP_URL}/comment/${eventId}`);
-        // setCommentsList(response.data);
+        setCommentsList((prevComments) => [newComment, ...prevComments]);
+        setComment('');
       } catch (error) {
         console.error('Error posting comment:', error);
-        // Optionally revert optimistic update on error
-        setCommentsList((prevComments) => prevComments.filter(c => c.createdAt !== newComment.createdAt));
+        setErrorMessage('Failed to post comment.');
+        setTimeout(() => setErrorMessage(''), 1500);
       }
     }
   };
 
   return (
-    <div className='w-full p-4 rounded-lg '>
+    <div className='w-full p-4 rounded-lg'>
       <form onSubmit={handleCommentSubmit} className='flex flex-col'>
         <input
           type='text'
@@ -85,9 +82,9 @@ function CommentsBox({ eventId }) {
       </form>
       <div className='mt-4'>
         {commentsList
-          .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)) // Sort by createdAt descending
+          .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
           .map((c, index) => (
-            <div key={index} className=' bg-white font-normal p-2 my-1 rounded-lg flex items-start'>
+            <div key={index} className='bg-white font-normal p-2 my-1 rounded-lg flex items-start'>
               <FaUserCircle className='text-gray-500 mr-1' size={24} />
               <div className='flex flex-col w-full'>
                 <div className='flex justify-between text-sm'>

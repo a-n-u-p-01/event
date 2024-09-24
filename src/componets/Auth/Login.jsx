@@ -53,13 +53,13 @@ const Login = () => {
     };
 
     return (
-        <motion.div className='bg-white w-full h-full flex justify-center p-36'>
+        <motion.div className='bg-white w-full h-full font-thin flex justify-center p-36'>
             <div className="h-full px-4 w-full lg:w-[45%] flex flex-col items-center">
-                <button onClick={handleGoHome}>Go Home</button>
+                <button onClick={handleGoHome} className='font-semibold'>Go Home</button>
 
                 {error && <p className="text-red-500">{error}</p>} {/* Display error message */}
 
-                {loading && <p className="text-gray-700">Logging in, please wait...</p>} {/* Loading message */}
+                {loading && <p className="text-gray-700">Please wait...</p>} {/* Loading message */}
 
                 <form className="w-full" onSubmit={handleSubmit}>
                     <div className="mb-4">
