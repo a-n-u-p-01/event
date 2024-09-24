@@ -1,0 +1,9 @@
+{
+    "functions": {
+      "api/keep-alive.js": {
+        "runtime": "nodejs18.x",
+        "schedule": "*/4 * * * * *" 
+      }
+    }
+  }
+  

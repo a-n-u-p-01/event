@@ -21,7 +21,7 @@ function Layout() {
   const hideHeaderAndFooterRoutes = ["/login", "/register","/payment"];
   const shouldHideHeaderAndFooter = hideHeaderAndFooterRoutes.includes(location.pathname);
 
-  
+  fetch
   
   return (
     <div className="flex flex-col min-h-screen w-full text-black font-bold">

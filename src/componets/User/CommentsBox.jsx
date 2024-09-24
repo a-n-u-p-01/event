@@ -19,7 +19,7 @@ function CommentsBox({ eventId }) {
     };
 
     fetchComments();
-    const intervalId = setInterval(fetchComments, 2000); // Poll every 2 seconds
+    const intervalId = setInterval(fetchComments, 1000);
 
     return () => clearInterval(intervalId); // Cleanup on unmount
   }, [eventId]);
