@@ -3,7 +3,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import Top from "./Top";
 import Middle from "./Middle";
 
+
+
 function Home() {
+
   return (
     <div className="ml-24 mr-24">
       <AnimatePresence>
