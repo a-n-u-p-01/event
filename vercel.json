@@ -1,7 +1,7 @@
 {
   "functions": {
     "api/keep-alive-scheduled.js": {
-      "runtime": "nodejs18.x"
+      "runtime": "vercel-node@1.0.0" 
     }
   }
 }
