@@ -16,10 +16,6 @@ function EventCard3({ event, setHostEventId, loading, setShowAttendees, titleLim
   const truncatedTitle = truncateText(event.title, titleLimit);
   const truncatedDescription = truncateText(event.description, descriptionLimit);
 
-  // if (loading) {
-  //   return <EventCard2Skeleton />;
-  // }
-
   return (
     <div id={event.eventId} className="my-6 bg-white h-48 shadow-sm border border-slate-200 rounded-lg w-96 relative flex flex-col">
       <div className="p-4 flex-grow">

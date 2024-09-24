@@ -38,25 +38,25 @@ function Feedback({ setShowFeedbacks, eventId }) {
   }
 
   return (
-    <div className="p-6 bg-gray-50 w-[70%] min-h-screen">
+    <div className="pt-2 w-[80%] h-fit">
       <button 
         onClick={() => setShowFeedbacks(false)} 
-        className="mb-6 bg-blue-600 text-white px-5 py-2 rounded-lg shadow hover:bg-blue-700 transition"
+        className="mb-6 bg-blue-600 text-white px-2 py-1 rounded-lg shadow hover:bg-blue-700 transition"
       >
         Go Back
       </button>
       <h2 className="text-xl font-bold text-gray-800 mb-5">Feedback for Event {eventId}</h2>
-      <div className="max-h-64 custom-scrollbar overflow-y-auto border border-gray-300 rounded-lg shadow-lg p-4 bg-white w-full">
+      <div className="h-fit custom-scrollbar text-sm overflow-y-auto rounded-lg p-4 bg-white w-[90%]">
         {feedbackList.length > 0 ? (
           feedbackList.map((feedback) => (
             <motion.div
               key={feedback.id || feedback.createdAt}
-              className="mb-3 p-2 border rounded-md bg-gray-50 shadow-sm transition-transform transform hover:scale-105"
+              className="p-2 mb-1 text-sm rounded-md bg-gray-100 transition-transform transform hover:scale-105"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 10 }}
             >
-              <div className="flex items-center justify-between">
+              <div className="flex text-sm items-center justify-between">
                 <div className="flex items-center">
                   <FaUserCircle className="h-5 w-5 text-gray-500 mr-2" />
                   <span className="font-semibold text-sm">{feedback.userId}</span>

@@ -1,20 +1,20 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { APP_URL } from "../util"; // Adjust the import path as needed
+import { APP_URL } from "../util"; 
 
 function FeedBackForm({ disabled, eventId }) {
   const [message, setMessage] = useState("");
-  const [status, setStatus] = useState("normal"); // "normal", "submitting", "submitted"
+  const [status, setStatus] = useState("normal"); 
 
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Prevent the default form submission
+    e.preventDefault(); 
 
     if (!message.trim()) {
       alert("Please enter your message.");
       return;
     }
 
-    setStatus("submitting"); // Show submitting status
+    setStatus("submitting"); 
 
     try {
       await axios.post(`${APP_URL}/feedback/submit/${eventId}`, 
@@ -27,18 +27,16 @@ function FeedBackForm({ disabled, eventId }) {
         }
       );
 
-      setMessage(""); // Clear the input field after submission
-      
+      setMessage("");
 
-      // Delay before hiding the form
       setTimeout(() => {
-        setStatus("hidden"); // Change to hidden state
-      }, 1000); // 3 seconds delay
+        setStatus("hidden"); 
+      }, 1000); 
       
     } catch (error) {
       console.error("Error submitting feedback:", error);
       alert("There was an error submitting your feedback. Please try again.");
-      setStatus("normal"); // Reset status in case of error
+      setStatus("normal");
     }
   };
 
@@ -50,7 +48,7 @@ function FeedBackForm({ disabled, eventId }) {
         <form onSubmit={handleSubmit}>
           <input
             type="text"
-            placeholder="Add message"
+            placeholder="Enter your feedback"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             className={`w-full rounded-md py-2 p-1 text-gray-800 bg-gray-100 focus:bg-transparent text-sm outline-none border border-gray-300 focus:border-blue-500 ${disabled ? "bg-gray-300 cursor-not-allowed" : ""}`}

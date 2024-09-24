@@ -5,6 +5,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import EventCard2Skeleton from "../Loading/EventCard2Skeleton";
 import { APP_URL } from "../util";
 
+
 const EventDiscovery = () => {
   const [eventId, setEventId] = useState();
   const handleEventId = (id) => {
@@ -18,9 +19,11 @@ const EventDiscovery = () => {
   const [filteredEvents, setFilteredEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const isFirstLoad = useRef(true);
-  const [hasFetched, setHasFetched] = useState(false); // New state to track data fetching
+  const [hasFetched, setHasFetched] = useState(false); 
   const navigate = useNavigate();
 
+
+  //load events
   useEffect(() => {
     if (isFirstLoad.current) {
       setLoading(true);
@@ -29,7 +32,7 @@ const EventDiscovery = () => {
         fetch(`${APP_URL}/event/get-all`)
           .then(response => {
             if (!response.ok) {
-              throw new Error('Network response was not ok');
+               return <div>'Network response was not ok'</div>;
             }
             return response.json();
           })
@@ -47,7 +50,7 @@ const EventDiscovery = () => {
           })
           .finally(() => {
             setLoading(false);
-            setHasFetched(true); // Set hasFetched to true after fetching data
+            setHasFetched(true); 
             isFirstLoad.current = false;
           });
       }, 300);
@@ -58,6 +61,9 @@ const EventDiscovery = () => {
     }
   }, []);
 
+
+
+  //Filtering search
   useEffect(() => {
     if (query) {
       const searchWords = query.toLowerCase().split(/\s+/);
@@ -102,12 +108,14 @@ const EventDiscovery = () => {
     }
   }, [query, events]);
 
+
+
   return (
-    <div className="bg-red-400 h-64 md:h-[50rem] flex ml-0 md:ml-24 mt-16">
-      <div className="bg-white h-full w-full flex justify-center pt-7">
+    <div className=" h-64 md:h-[50rem] flex ml-0 md:ml-24 mt-16">
+      <div className=" h-full w-full flex justify-center">
         <EventPublic eventId={eventId} setShowFeedbacks={setShowFeedbacks} showFeedbacks={showFeedbacks}/>
       </div>
-      <div className="bg-white border-l-2 border-l-red-200 pr-32 w-[80%] grid grid-cols-1 justify-items-center overflow-scroll custom-scrollbar pt-10">
+      <div className="bg-white border-l-2 border-l-red-200 pr-32 w-[80%] grid grid-cols-1 justify-items-center overflow-scroll custom-scrollbar">
         {loading ? (
           Array.from({ length: 5 }).map((_, index) => (
             <EventCard2Skeleton key={index} />

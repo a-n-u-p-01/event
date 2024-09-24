@@ -4,7 +4,7 @@
 /* Custom scrollbar for WebKit browsers */
 .custom-scrollbar::-webkit-scrollbar {
   width: 5px; /* Width of the vertical scrollbar */
-  height: 5px; /* Height of the horizontal scrollbar */
+  height: 1px; /* Height of the horizontal scrollbar */
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
@@ -23,3 +23,7 @@
   background: #ef4444; /* Color of the scroll thumb on hover */
 }
 
+.custom-scrollbarEvent::-webkit-scrollbar {
+  width: 5px; /* Width of the vertical scrollbar */
+  height: 5px; /* Height of the horizontal scrollbar */
+}

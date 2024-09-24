@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
-import EventCard2 from "../Event/EventCard2";
 import EventHosting from "../Event/EventHosting";
 import { APP_URL } from "../util";
 import EventCard3 from "../Event/EventCard3";

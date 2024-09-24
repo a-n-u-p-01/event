@@ -34,7 +34,7 @@ function UserData() {
     fetchUserData();
   }, []);
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <p className="text-gray-600">Loading...</p>;
   if (error) return <p>Error: {error}</p>;
   if (!userData) return null;
 

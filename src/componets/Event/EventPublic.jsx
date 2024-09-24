@@ -6,6 +6,7 @@ import EventPublicSkeleton from "../Loading/EventPublicSkeleton";
 import { APP_URL } from "../util";
 import { useNavigate } from "react-router-dom";
 import Feedback from "./Feedbacks";
+import CommentsBox from "../User/CommentsBox";
 
 function EventPublic({ eventId, setShowFeedbacks, showFeedbacks }) {
   const [event, setEvent] = useState(null);
@@ -111,7 +112,9 @@ function EventPublic({ eventId, setShowFeedbacks, showFeedbacks }) {
       const price = ticketPricing?.[`${selectedTicket}Price`] || "N/A";
       // Show a temporary message for processing
       setTimeout(() => {
-        navigate(`/payment?id=${eventId}&type=${selectedTicket}&price=${price}`);
+        navigate(
+          `/payment?id=${eventId}&type=${selectedTicket}&price=${price}`
+        );
       }, 1000); // 1 second delay
     } else {
       alert("Please select a ticket type before proceeding.");
@@ -181,10 +184,12 @@ function EventPublic({ eventId, setShowFeedbacks, showFeedbacks }) {
   }
 
   console.log(event);
+
+  //main container
   return showFeedbacks ? (
     <Feedback setShowFeedbacks={setShowFeedbacks} eventId={eventId} />
   ) : (
-    <div className="flex flex-col h-full bg-gray-800/5 m-5 shadow-md w-full p-3 rounded-xl overflow-hidden">
+    <div className="flex flex-col custom-scrollbarEvent overflow-y-scroll h-full bg-zinc-800/5 m-5 shadow-md w-full p-3 rounded-xl overflow-hidden">
       <img
         className="h-[30%] w-full rounded-lg object-cover object-center"
         src={imageUrl}
@@ -266,19 +271,18 @@ function EventPublic({ eventId, setShowFeedbacks, showFeedbacks }) {
       </div>
 
       <div className="mt-auto p-2">
-        <button
-          onClick={() => setShowFeedbacks(true)}
-          type="button"
-          className={`font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center w-full ${
-            event.status
-              ? "bg-gray-300 text-red-600 cursor-not-allowed"
-              : "bg-blue-700 text-white hover:bg-blue-800"
-          }`}
-          disabled={event.status}
-        >
-          See Feedbacks
-        </button>
+        {!event.status && (
+          <button
+            onClick={() => setShowFeedbacks(true)}
+            type="button"
+            className="font-medium rounded-lg text-sm text-center inline-flex items-center text-green-600"
+          >
+            See Feedbacks
+          </button>
+        )}
       </div>
+
+      <CommentsBox eventId={eventId} />
     </div>
   );
 }
