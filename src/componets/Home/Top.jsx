@@ -39,7 +39,7 @@ const navigate = useNavigate()
       <div className="bg-white h-full w-[50%] ">
         <img
           class="object-cover object-center w-full h-full"
-          src="./public/wallpaper.jpg"
+          src="https://wallpapercave.com/wp/wp7485440.jpg"
           alt="nature image"
         />
       </div>
