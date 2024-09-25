@@ -3,11 +3,12 @@ import { APP_URL } from "../util";
 
 function UserData() {
   const [userData, setUserData] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchUserData = async () => {
+      setLoading(true)
       const token = localStorage.getItem("token");
       try {
         const response = await fetch(`${APP_URL}/user/get-user-data`, {

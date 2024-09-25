@@ -1,7 +1,0 @@
-{
-  "functions": {
-    "api/keep-alive-scheduled.js": {
-      "runtime": "vercel-node@1.0.0" 
-    }
-  }
-}

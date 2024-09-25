@@ -24,8 +24,8 @@ function HostingEvent() {
           },
         });
 
-        const fetchedEvents = response.data.events;
-        const reversedEvents = fetchedEvents.reverse();
+        const fetchedEvents =await response.data.events;
+        const reversedEvents =await fetchedEvents.reverse();
         setEvents(reversedEvents);
 
         if (reversedEvents.length > 0) {

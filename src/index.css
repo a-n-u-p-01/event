@@ -27,3 +27,7 @@
   width: 5px; /* Width of the vertical scrollbar */
   height: 5px; /* Height of the horizontal scrollbar */
 }
+.custom-scrollbar1::-webkit-scrollbar {
+  width: 0px; /* Width of the vertical scrollbar */
+  height: 0px; /* Height of the horizontal scrollbar */
+}

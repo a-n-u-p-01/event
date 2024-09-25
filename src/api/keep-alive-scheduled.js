@@ -1,7 +1,6 @@
 
 export default async function handler(req, res) {
   const backendUrl = 'https://event-managment-backend-bn7q.onrender.com/health-check'; 
-
   try {
       const response = await fetch(backendUrl);
       if (response.ok) {
@@ -13,5 +12,5 @@ export default async function handler(req, res) {
       console.log('Error pinging backend:', error);
   }
 
-  res.status(200).json({ status: 'success' });
+  
 }
