@@ -20,12 +20,7 @@ import healthCheck from "./api/keep-alive-scheduled";
 function Layout() {
   const location = useLocation();
   const hideHeaderAndFooterRoutes = ["/login", "/register","/payment"];
-  const shouldHideHeaderAndFooter = hideHeaderAndFooterRoutes.includes(location.pathname);
-
-
-  setInterval(healthCheck,10000)
-  
-  
+  const shouldHideHeaderAndFooter = hideHeaderAndFooterRoutes.includes(location.pathname);  
   return (
     <div className="flex flex-col min-h-screen w-full text-black font-bold">
       {!shouldHideHeaderAndFooter && <Navbar />}

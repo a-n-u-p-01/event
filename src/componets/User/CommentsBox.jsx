@@ -60,6 +60,24 @@ function CommentsBox({ eventId }) {
     }
   };
 
+  const timeAgo = (date) => {
+    const seconds = Math.floor((new Date() - new Date(date)) / 1000);
+    let interval = Math.floor(seconds / 31536000);
+    if (interval > 1) return `${interval} years ago`;
+    interval = Math.floor(seconds / 2592000);
+    if (interval > 1) return `${interval} months ago`;
+    interval = Math.floor(seconds / 86400);
+    if (interval > 1) return `${interval} days ago`;
+    interval = Math.floor(seconds / 3600);
+    if (interval > 1) return `${interval} hours ago`;
+    interval = Math.floor(seconds / 60);
+    return `${interval} minutes ago`; // Show minutes and omit seconds
+  };
+
+  const formatDate = (date) => {
+    return new Date(date).toLocaleDateString(); // Format date
+  };
+
   return (
     <div className='w-full p-4 rounded-lg'>
       <form onSubmit={handleCommentSubmit} className='flex flex-col'>
@@ -89,7 +107,7 @@ function CommentsBox({ eventId }) {
               <div className='flex flex-col w-full'>
                 <div className='flex justify-between text-sm'>
                   <div className='font-medium text-xs'>{c.userName}</div>
-                  <div className='text-gray-500 text-xs'>{new Date(c.createdAt).toLocaleString()}</div>
+                  <div className='text-gray-500 text-xs'>{timeAgo(c.createdAt)} | {formatDate(c.createdAt)}</div>
                 </div>
                 <div className='mt-1 text-gray-700 text-sm'>{c.comment}</div>
               </div>
