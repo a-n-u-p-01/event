@@ -3,6 +3,7 @@ import { FaUserCircle } from 'react-icons/fa';
 import axios from 'axios';
 import { APP_URL } from '../util';
 
+
 function CommentsBox({ eventId }) {
   const [comment, setComment] = useState('');
   const [commentsList, setCommentsList] = useState([]);
@@ -13,6 +14,7 @@ function CommentsBox({ eventId }) {
       try {
         const response = await axios.get(`${APP_URL}/comment/${eventId}`);
         setCommentsList(response.data);
+
       } catch (error) {
         console.error('Error fetching comments:', error);
       }
@@ -20,15 +22,17 @@ function CommentsBox({ eventId }) {
 
     fetchComments();
     const intervalId = setInterval(fetchComments, 1000);
-
-    return () => clearInterval(intervalId); // Cleanup on unmount
+    return () => clearInterval(intervalId); // Cleanup on unmount to ensure that it does not fetch while not rendered the comment
   }, [eventId]);
 
-  const handleCommentChange = (e) => {
-    setComment(e.target.value);
-  };
 
-  const handleCommentSubmit = async (e) => {
+
+
+const handleCommentChanges = (e)=>{
+  setComment(e.target.value)
+}
+
+const handleCommentSubmit = async (e) => {
     e.preventDefault();
 
     const token = localStorage.getItem('token');
@@ -60,19 +64,6 @@ function CommentsBox({ eventId }) {
     }
   };
 
-  const timeAgo = (date) => {
-    const seconds = Math.floor((new Date() - new Date(date)) / 1000);
-    let interval = Math.floor(seconds / 31536000);
-    if (interval > 1) return `${interval} years ago`;
-    interval = Math.floor(seconds / 2592000);
-    if (interval > 1) return `${interval} months ago`;
-    interval = Math.floor(seconds / 86400);
-    if (interval > 1) return `${interval} days ago`;
-    interval = Math.floor(seconds / 3600);
-    if (interval > 1) return `${interval} hours ago`;
-    interval = Math.floor(seconds / 60);
-    return `${interval} minutes ago`; // Show minutes and omit seconds
-  };
 
   const formatDate = (date) => {
     return new Date(date).toLocaleDateString(); // Format date
@@ -84,7 +75,7 @@ function CommentsBox({ eventId }) {
         <input
           type='text'
           value={comment}
-          onChange={handleCommentChange}
+          onChange={handleCommentChanges}
           placeholder='Write a comment...'
           className='mb-2 p-1 font-normal focus:outline-none rounded text-sm'
         />
@@ -107,7 +98,7 @@ function CommentsBox({ eventId }) {
               <div className='flex flex-col w-full'>
                 <div className='flex justify-between text-sm'>
                   <div className='font-medium text-xs'>{c.userName}</div>
-                  <div className='text-gray-500 text-xs'>{timeAgo(c.createdAt)} | {formatDate(c.createdAt)}</div>
+                  <div className='text-gray-500 text-xs'>{new Date(c.createdAt).toLocaleTimeString()} | {formatDate(c.createdAt)}</div>
                 </div>
                 <div className='mt-1 text-gray-700 text-sm'>{c.comment}</div>
               </div>

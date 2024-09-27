@@ -19,14 +19,14 @@ const Login = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setLoading(true); // Set loading to true
-        setError(""); // Reset any previous error
+        setLoading(true); 
+        setError(""); 
         try {
             const response = await axios.post(`${APP_URL}/auth/login`, formData, {
                 withCredentials: true,
             });
 
-            // Simulating a delay for the loading effect
+          
             await new Promise(resolve => setTimeout(resolve, 2000));
 
             if (response.data?.token) {
@@ -40,7 +40,7 @@ const Login = () => {
             setError("Login failed. Please check your credentials.");
             console.log("Login Failed", error);
         } finally {
-            setLoading(false); // Reset loading state
+            setLoading(false); 
         }
     };
 
@@ -57,13 +57,13 @@ const Login = () => {
             <div className="h-full px-4 w-full lg:w-[45%] flex flex-col items-center">
                 <button onClick={handleGoHome} className='font-semibold'>Go Home</button>
 
-                {error && <p className="text-red-500">{error}</p>} {/* Display error message */}
+                {error && <p className="text-red-500">{error}</p>} 
 
-                {loading && <p className="text-gray-700">Please wait...</p>} {/* Loading message */}
+                {loading && <p className="text-gray-700">Please wait...</p>} 
 
                 <form className="w-full" onSubmit={handleSubmit}>
                     <div className="mb-4">
-                        <label htmlFor="email" className="block text-gray-700">
+                        <label htmlFor="email" classNa-me="block text-gray700">
                             Email
                         </label>
                         <input
@@ -92,9 +92,9 @@ const Login = () => {
                         <button
                             type="submit"
                             className="w-full h-[40px] bg-red-600 text-white rounded-md hover:bg-red-500"
-                            disabled={loading} // Disable button while loading
+                            disabled={loading} 
                         >
-                            {loading ? 'Logging in...' : 'Login'} {/* Change button text */}
+                            {loading ? 'Logging in...' : 'Login'} 
                         </button>
                     </div>
 

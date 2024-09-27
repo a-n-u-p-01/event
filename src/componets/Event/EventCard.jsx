@@ -10,6 +10,8 @@ function EventCard({ event, titleLimit = 50, totalLimit = 80 }) {
   };
 
   // Truncate title if it exceeds the title limit
+
+  
   const truncatedTitle = truncateText(event.title, titleLimit);
   const titleLength = truncatedTitle.length;
 

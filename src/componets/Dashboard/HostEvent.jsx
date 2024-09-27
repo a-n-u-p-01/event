@@ -48,17 +48,17 @@ function HostEvent({ handleSetOption }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsCreating(true); // Set creating state to true
+    setIsCreating(true);
     try {
       if (event.title.length < 5) {
         alert("Enter minimum 5 words for title.");
-        setIsCreating(false); // Reset creating state
+        setIsCreating(false);
         return;
       }
 
       if (event.description.length < 10) {
         alert("Enter minimum 10 words for description.");
-        setIsCreating(false); // Reset creating state
+        setIsCreating(false);
         return;
       }
 

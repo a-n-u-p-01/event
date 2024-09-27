@@ -43,17 +43,17 @@ function UserData() {
   const joinedDate = new Date(userDTO.createdAt).toLocaleDateString();
 
   return (
-    <div className="m-3 w-3/4 max-w-md p-3 rounded-lg shadow-md bg-gray-100">
-      <div className="w-full p-3 rounded-lg shadow-sm mb-3">
-        <h1 className="text-zinc-800 text-lg font-bold mb-2">User Details</h1>
-        <div className="bg-gray-500 p-2 rounded-lg">
-          <p className="text-gray-900 text-sm mb-1">
+    <div className="w-3/4 max-w-md rounded-lg shadow-md bg-gray-100">
+      <div className="w-full rounded-lg shadow-sm ">
+        <h1 className="text-zinc-800 border-b-2 font-normal pl-4 p-1 ">User Details</h1>
+        <div className=" p-1 pl-4 border-b-2 rounded-lg">
+          <p className="text-gray-900 font-normal text-sm mb-1">
             <strong>Name:</strong> <span>{userDTO.fullName}</span>
           </p>
-          <p className="text-gray-900 text-sm mb-1">
+          <p className="text-gray-900 font-normal text-sm mb-1">
             <strong>Email:</strong> <span>{userDTO.email}</span>
           </p>
-          <p className="text-gray-900 text-sm mb-1">
+          <p className="text-gray-900 font-normal text-sm mb-1">
             <strong>Joined Date:</strong> <span>{joinedDate}</span>
           </p>
         </div>

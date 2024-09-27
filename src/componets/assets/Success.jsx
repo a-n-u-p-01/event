@@ -1,10 +1,9 @@
+import { formatDistance } from "date-fns";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 function Success({handleCreated,handleSetOption}) {
  const navigate = useNavigate()
-
-
 
 
   return (

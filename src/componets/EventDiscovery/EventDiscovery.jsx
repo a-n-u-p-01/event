@@ -4,6 +4,7 @@ import EventPublic from "../Event/EventPublic";
 import { useLocation, useNavigate } from 'react-router-dom';
 import EventCard2Skeleton from "../Loading/EventCard2Skeleton";
 import { APP_URL } from "../util";
+import axios from "axios";
 
 
 const EventDiscovery = () => {
@@ -19,11 +20,8 @@ const EventDiscovery = () => {
   const [filteredEvents, setFilteredEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const isFirstLoad = useRef(true);
-  const [hasFetched, setHasFetched] = useState(false); 
-  const navigate = useNavigate();
 
 
-  //load events
   useEffect(() => {
     if (isFirstLoad.current) {
       setLoading(true);
@@ -50,7 +48,6 @@ const EventDiscovery = () => {
           })
           .finally(() => {
             setLoading(false);
-            setHasFetched(true); 
             isFirstLoad.current = false;
           });
       }, 300);
@@ -61,52 +58,51 @@ const EventDiscovery = () => {
     }
   }, []);
 
+  // useEffect(()=>{
+  //     const fetchEvents = async () =>{
+  //       setLoading(true)
+  //         try{
+  //           const response = await axios.get(`${APP_URL}/event/get-all`)
+  //           const data = await response.data;
+  //           setEvents(data.reverse())
+          
+  //         }
+  //         catch(error){
+  //           <div>Error while fetching events</div>
+  //         }
+  //         finally{
+  //           setLoading(false)
+  //         }
+  //     }
+  //     fetchEvents();
+  //     if (events.length > 0) {
+  //       setEventId(events[0].eventId);
+  //    }
+  //     console.log(eventId);
+      
+  // },[]);
 
 
-  //Filtering search
+
+  //filter the query
   useEffect(() => {
     if (query) {
-      const searchWords = query.toLowerCase().split(/\s+/);
-      const numberRegex = /^\d+$/;
-
+      const searchWords = query.toLowerCase().trim().split(' ');
+      const isSingleNumber = searchWords.length === 1 && !isNaN(searchWords[0]);
+      
       const filtered = events.filter(event => {
-        let matchCount = 0;
-
-        const titleMatch = searchWords.some(word => {
-          if (event.title.toLowerCase().includes(word)) {
-            matchCount++;
-            return true;
-          }
-          return false;
-        });
-
-        const descriptionMatch = searchWords.some(word => {
-          if (event.description.toLowerCase().includes(word)) {
-            matchCount++;
-            return true;
-          }
-          return false;
-        });
-
-        const isSingleNumber = searchWords.length === 1 && numberRegex.test(searchWords[0]);
+        const titleMatch = searchWords.some(word => event.title.toLowerCase().includes(word));
+        const descriptionMatch = searchWords.some(word => event.description.toLowerCase().includes(word));
         const matchesEventId = isSingleNumber && event.eventId.toString() === searchWords[0];
-
-        return matchCount > 0 || matchesEventId;
+  
+        return titleMatch || descriptionMatch || matchesEventId;
       });
-
-      filtered.sort((a, b) => {
-        const aMatches = a.title.split(' ').filter(word => searchWords.includes(word)).length +
-                         a.description.split(' ').filter(word => searchWords.includes(word)).length;
-        const bMatches = b.title.split(' ').filter(word => searchWords.includes(word)).length +
-                         b.description.split(' ').filter(word => searchWords.includes(word)).length;
-        return bMatches - aMatches;
-      });
-
       setFilteredEvents(filtered);
     } else {
       setFilteredEvents(events);
     }
   }, [query, events]);
+  
 
 
 

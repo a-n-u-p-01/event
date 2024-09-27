@@ -221,10 +221,10 @@ function EventPublic({ eventId, setShowFeedbacks, showFeedbacks }) {
 
       <div className="flex items-center justify-between pt-4 font-sans font-normal">
         <span className="flex items-center gap-1">
-          <CiCalendarDate /> Start: {startTime || "N/A"}
+          <CiCalendarDate /> Start: {startTime?`${new Date(startTime).toLocaleTimeString()} | ${new Date(startTime).toLocaleDateString()} ` :"N/A"}
         </span>
         <span className="flex items-center gap-1">
-          <CiCalendarDate /> End: {endTime || "N/A"}
+          <CiCalendarDate /> End: {endTime?`${new Date(endTime).toLocaleTimeString()} | ${new Date(endTime).toLocaleDateString()} ` :"N/A"}
         </span>
       </div>
 

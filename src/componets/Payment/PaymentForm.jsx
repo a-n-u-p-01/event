@@ -102,7 +102,7 @@ function PaymentForm() {
                   <div className="mb-6 grid grid-cols-2 gap-4">
                     <div className="col-span-2 sm:col-span-1">
                       <label htmlFor="full_name" className="mb-2 block text-sm font-medium text-gray-900">
-                        Full name (as displayed on card)*
+          
                       </label>
                       <input
                         type="text"
