@@ -21,7 +21,7 @@ function CommentsBox({ eventId }) {
     };
 
     fetchComments();
-    const intervalId = setInterval(fetchComments, 1000);
+    const intervalId = setInterval(fetchComments, 100000);
     return () => clearInterval(intervalId); // Cleanup on unmount to ensure that it does not fetch while not rendered the comment
   }, [eventId]);
 

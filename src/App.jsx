@@ -14,18 +14,20 @@ import Register from "./componets/Auth/Register";
 import Login from "./componets/Auth/Login";
 import Dashboard from "./componets/Dashboard/Dashboard";
 import PaymentForm from "./componets/Payment/PaymentForm";
-import healthCheck from "./api/keep-alive-scheduled";
+import ChatGroup from "./componets/ChatGroup/ChatGroup";
 
 
 function Layout() {
   const location = useLocation();
   const hideHeaderAndFooterRoutes = ["/login", "/register","/payment"];
+  const hideFooterRoutes = ["/chat-group","/login", "/register","/payment"];
+  const shouldHideFooter= hideFooterRoutes.includes(location.pathname);  
   const shouldHideHeaderAndFooter = hideHeaderAndFooterRoutes.includes(location.pathname);  
   return (
     <div className="flex flex-col min-h-screen w-full text-black font-bold">
       {!shouldHideHeaderAndFooter && <Navbar />}
 
-      <div className="flex-grow p-4">
+      <div className="flex-grow">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/events" element={<EventDiscovery />} />
@@ -45,10 +47,15 @@ function Layout() {
             path="/payment" 
             element={localStorage.getItem('token') ? <PaymentForm /> : <Navigate to="/login" replace />} 
           />
+           <Route 
+            path="/chat-group" 
+            element={localStorage.getItem('token') ? <ChatGroup /> : <Navigate to="/login" replace />} 
+          />
         </Routes>
+
       </div>
 
-      {!shouldHideHeaderAndFooter && <Footer />}
+      {!shouldHideFooter && <Footer />}
     </div>
   );
 }

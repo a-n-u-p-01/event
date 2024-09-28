@@ -221,10 +221,20 @@ function EventPublic({ eventId, setShowFeedbacks, showFeedbacks }) {
 
       <div className="flex items-center justify-between pt-4 font-sans font-normal">
         <span className="flex items-center gap-1">
-          <CiCalendarDate /> Start: {startTime?`${new Date(startTime).toLocaleTimeString()} | ${new Date(startTime).toLocaleDateString()} ` :"N/A"}
+          <CiCalendarDate /> Start:{" "}
+          {startTime
+            ? `${new Date(startTime).toLocaleTimeString()} | ${new Date(
+                startTime
+              ).toLocaleDateString()} `
+            : "N/A"}
         </span>
         <span className="flex items-center gap-1">
-          <CiCalendarDate /> End: {endTime?`${new Date(endTime).toLocaleTimeString()} | ${new Date(endTime).toLocaleDateString()} ` :"N/A"}
+          <CiCalendarDate /> End:{" "}
+          {endTime
+            ? `${new Date(endTime).toLocaleTimeString()} | ${new Date(
+                endTime
+              ).toLocaleDateString()} `
+            : "N/A"}
         </span>
       </div>
 
@@ -270,7 +280,7 @@ function EventPublic({ eventId, setShowFeedbacks, showFeedbacks }) {
         )}
       </div>
 
-      <div className="mt-auto p-2">
+      <div className="mt-auto p-2 flex justify-between">
         {!event.status && (
           <button
             onClick={() => setShowFeedbacks(true)}
@@ -280,6 +290,9 @@ function EventPublic({ eventId, setShowFeedbacks, showFeedbacks }) {
             See Feedbacks
           </button>
         )}
+        <button className="text-zinc-700" onClick={() => {navigate("/chat-group")}}>
+          Community
+        </button>
       </div>
 
       <CommentsBox eventId={eventId} />
