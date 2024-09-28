@@ -7,7 +7,7 @@ const Message = ({ text, sender, userName, time, type }) => {
     <div className={`mb-3 ${type === "JOIN" || type === "LEAVE" ? "text-center" : ""}`}>
       {type === "JOIN" || type === "LEAVE" ? (
         <div className="text-gray-500">
-          <span className="italic">
+          <span className="italic text-sm font-normal">
             {type === "JOIN" ? `${sender} has joined the chat` : `${sender} has left the chat`}
           </span>
         </div>

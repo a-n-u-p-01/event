@@ -27,7 +27,7 @@ function Layout() {
     <div className="flex flex-col min-h-screen w-full text-black font-bold">
       {!shouldHideHeaderAndFooter && <Navbar />}
 
-      <div className="flex-grow">
+      <div className="flex-grow mt-4">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/events" element={<EventDiscovery />} />
