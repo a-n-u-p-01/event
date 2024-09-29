@@ -1,111 +1,135 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import axios from 'axios';
-import { APP_URL } from '../util';
+import axios from "axios";
+import { APP_URL } from "../util";
 
 const Login = () => {
-    const navigate = useNavigate();
-    const [formData, setFormData] = useState({
-        email: "",
-        password: "",
-    });
-    const [error, setError] = useState("");
-    const [loading, setLoading] = useState(false); // Loading state
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false); // Loading state
 
-    const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
-    };
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setLoading(true); 
-        setError(""); 
-        try {
-            const response = await axios.post(`${APP_URL}/auth/login`, formData, {
-                withCredentials: true,
-            });
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+    try {
+      const response = await axios.post(`${APP_URL}/auth/login`, formData, {
+        withCredentials: true,
+      });
 
-          
-            await new Promise(resolve => setTimeout(resolve, 2000));
+      await new Promise((resolve) => setTimeout(resolve, 2000));
 
-            if (response.data?.token) {
-                localStorage.setItem("token", response.data.token);
-                localStorage.setItem("userId", response.data.userId);
-                console.log( localStorage.getItem("userId"))
-                localStorage.setItem("userName", response.data.userName);
-                navigate("/dashboard");
-            }
-        } catch (error) {
-            setError("Login failed. Please check your credentials.");
-            console.log("Login Failed", error);
-        } finally {
-            setLoading(false); 
-        }
-    };
+      if (response.data?.token) {
+        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("userId", response.data.userId);
+        console.log(localStorage.getItem("userId"));
+        localStorage.setItem("userName", response.data.userName);
+        navigate("/dashboard");
+      }
+    } catch (error) {
+      setError("Login failed. Please check your credentials.");
+      console.log("Login Failed", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    const handleGoRegister = () => {
-        navigate('/register');
-    };
+  const handleGoogleLogin = () => {
+    // Redirect to backend OAuth2 Google login
+    window.location.href = `${APP_URL}/oauth2/authorization/google`;
+  };
 
-    const handleGoHome = () => {
-        navigate('/');
-    };
+  const handleGoRegister = () => {
+    navigate("/register");
+  };
 
-    return (
-        <motion.div className='bg-white w-full h-full font-thin flex justify-center p-36'>
-            <div className="h-full px-4 w-full lg:w-[45%] flex flex-col items-center">
-                <button onClick={handleGoHome} className='font-semibold'>Go Home</button>
+  const handleGoHome = () => {
+    navigate("/");
+  };
 
-                {error && <p className="text-red-500">{error}</p>} 
+  return (
+    <motion.div className="bg-white w-full h-full font-thin flex justify-center p-36">
+      <div className="h-full px-4 w-full lg:w-[45%] flex flex-col items-center">
+        <button onClick={handleGoHome} className="font-semibold">
+          Go Home
+        </button>
 
-                {loading && <p className="text-gray-700">Please wait...</p>} 
+        {error && <p className="text-red-500">{error}</p>}
 
-                <form className="w-full" onSubmit={handleSubmit}>
-                    <div className="mb-4">
-                        <label htmlFor="email" classNa-me="block text-gray700">
-                            Email
-                        </label>
-                        <input
-                            type="email"
-                            name="email"
-                            onChange={handleChange}
-                            placeholder="Your email"
-                            className="w-full h-[40px] border border-gray-300 rounded-md px-2"
-                            required
-                        />
-                    </div>
-                    <div className="mb-4">
-                        <label htmlFor="password" className="block text-gray-700">
-                            Password
-                        </label>
-                        <input
-                            type="password"
-                            name="password"
-                            onChange={handleChange}
-                            placeholder="Your password"
-                            className="w-full h-[40px] border border-gray-300 rounded-md px-2"
-                            required
-                        />
-                    </div>
-                    <div className="mb-4">
-                        <button
-                            type="submit"
-                            className="w-full h-[40px] bg-red-600 text-white rounded-md hover:bg-red-500"
-                            disabled={loading} 
-                        >
-                            {loading ? 'Logging in...' : 'Login'} 
-                        </button>
-                    </div>
+        {loading && <p className="text-gray-700">Please wait...</p>}
 
-                    <div className='font-thin'>
-                        New to Event Community?
-                        <button onClick={handleGoRegister} className='text-blue-600'> Register</button>
-                    </div>
-                </form>
-            </div>
-        </motion.div>
-    );
+        <form className="w-full" onSubmit={handleSubmit}>
+          <div className="mb-4">
+            <label htmlFor="email" classNa-me="block text-gray700">
+              Email
+            </label>
+            <input
+              type="email"
+              name="email"
+              onChange={handleChange}
+              placeholder="Your email"
+              className="w-full h-[40px] border border-gray-300 rounded-md px-2"
+              required
+            />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="password" className="block text-gray-700">
+              Password
+            </label>
+            <input
+              type="password"
+              name="password"
+              onChange={handleChange}
+              placeholder="Your password"
+              className="w-full h-[40px] border border-gray-300 rounded-md px-2"
+              required
+            />
+          </div>
+          <div className="mb-4">
+            <button
+              type="submit"
+              className="w-full h-[40px] bg-red-600 text-white rounded-md hover:bg-red-500"
+              disabled={loading}
+            >
+              {loading ? "Logging in..." : "Login"}
+            </button>
+          </div>
+
+          <div className="font-thin">
+            New to Event Community?
+            <button onClick={handleGoRegister} className="text-blue-600">
+              {" "}
+              Register
+            </button>
+          </div>
+        </form>
+
+        {/* Google OAuth Login */}
+        <div className="mt-4">
+        <button
+            onClick={handleGoogleLogin}
+            className="w-[33rem] h-[40px] gap-2 bg-zinc-700/5 text-black rounded-md hover:bg-gray-200 flex items-center justify-center"
+          >
+            <img
+              src="https://docs.material-tailwind.com/icons/google.svg"
+              alt="metamask"
+              className="h-6 w-6"
+            />
+            Login with Google
+          </button>
+        </div>
+      </div>
+    </motion.div>
+  );
 };
 
 export default Login;

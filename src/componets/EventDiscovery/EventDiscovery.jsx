@@ -111,7 +111,7 @@ const EventDiscovery = () => {
       <div className=" h-full w-full flex justify-center">
         <EventPublic eventId={eventId} setShowFeedbacks={setShowFeedbacks} showFeedbacks={showFeedbacks}/>
       </div>
-      <div className="bg-white border-l-2 border-l-red-200 pr-32 w-[80%] grid grid-cols-1 justify-items-center overflow-scroll custom-scrollbar">
+      <div className="bg-white border-l-2 p-2 border-l-red-200 pr-32 w-[80%]  grid grid-cols-1 justify-items-center overflow-scroll custom-scrollbar">
         {loading ? (
           Array.from({ length: 5 }).map((_, index) => (
             <EventCard2Skeleton key={index} />

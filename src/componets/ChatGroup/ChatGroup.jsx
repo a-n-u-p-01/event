@@ -5,14 +5,22 @@ import SockJS from "sockjs-client";
 import axios from "axios";
 import { APP_URL } from "../util";
 import { FaComments } from "react-icons/fa";
+import { div } from "framer-motion/m";
+import { useNavigate } from "react-router-dom";
 
 function ChatGroup() {
+  const navigate = useNavigate()
   const [stompClient, setStompClient] = useState(null);
   const [messages, setMessages] = useState([]);
   const [activeUsers, setActiveUsers] = useState([]);
   const [messageContent, setMessageContent] = useState("");
   const [userName, setUserName] = useState("");
   const [joined, setJoined] = useState(false);
+
+  const params = new URLSearchParams(location.search);
+  const eventId = params.get('eventId')
+
+
 
   useEffect(() => {
     const name = localStorage.getItem("userName");
@@ -64,7 +72,7 @@ function ChatGroup() {
         type: "MESSAGE",
       };
       stompClient.send(
-        "/app/chat.sendMessage",
+        `/app/chat.sendMessage/${eventId}`,
         {},
         JSON.stringify(chatMessage)
       );
@@ -115,15 +123,24 @@ function ChatGroup() {
   }, [joined]);
 
   return (
+  
     <div className="flex pt-20 w-full h-screen bg-gray-100">
       <div className="h-full w-[20%] p-4 bg-white shadow-md rounded-lg">
         {!joined ? (
+          <div className="flex justify-between">
           <button
             onClick={joinGroup}
             className="mt-1 bg-green-600 font-normal text-sm text-white p-2 rounded hover:bg-green-700 transition"
           >
             Join Chat
           </button>
+           <button
+           onClick={()=>{navigate("/events")}}
+           className="mt-1 bg-gray-600 font-normal text-sm text-white p-2 rounded  transition"
+         >
+           Go Back
+         </button>
+         </div>
         ) : (
           <button
             onClick={leaveGroup}
@@ -160,7 +177,7 @@ function ChatGroup() {
         ) : (
           <div className="flex flex-col items-center justify-center h-full text-gray-600 p-8 pb-44">
             <FaComments className="text-6xl mb-6 text-gray-400 animate-bounce" />
-            <h2 className="text-xl font-semibold">Welcome to the Chat Room</h2>
+            <h2 className="text-xl font-semibold">Welcome to the Chat Room for event {eventId}</h2>
             <p className="mt-2 text-center">
               Join the conversation and connect with others! Click on left side button
             </p>

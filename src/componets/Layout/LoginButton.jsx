@@ -9,7 +9,7 @@ export const LoginButton = () => {
     
   return (
     <div className='flex justify-around gap-1'> 
-        <button onClick={handleGoLogin} className='text-zinc-800 text-lg font-bold pr-5'>Login</button>
+        <button onClick={handleGoLogin} className='text-lg text-slate-400 font-bold pr-5'>Login</button>
     </div>
   )
 }

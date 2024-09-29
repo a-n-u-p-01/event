@@ -29,12 +29,12 @@ function Navbar() {
 },[])
 
   return (
-    <nav className="w-full z-10 h-20 bg-zinc-800/40 rounded-b-xl text-black flex justify-between pt-4 pl-5 pr-5 fixed">
+    <nav className="w-full z-10 h-20 bg-gray-800 rounded-b-xl text-black flex justify-between pt-4 pl-5 pr-5 fixed">
       <div className="flex gap-5">
         <button
           name="logo"
           onClick={handleGoHome}
-          className="flex items-center justify-center gap-3 p-[13px] text-white font-bold text-2xl shadow-3d transition-transform duration-200 hover:transform hover:-translate-y-1 hover:scale-105"
+          className="flex items-center justify-center gap-3 p-[13px] text-slate-400 font-bold text-2xl shadow-3d transition-transform duration-200 hover:transform hover:-translate-y-1 hover:scale-105"
         >
           Event
         </button>

@@ -239,7 +239,7 @@ function EventPublic({ eventId, setShowFeedbacks, showFeedbacks }) {
       </div>
 
       <div className="flex items-center justify-between pt-4 font-sans font-normal">
-        <span>Tickets: {capacity || "N/A"}</span>
+        <span>Tickets: {capacity-bookedNumber || "N/A"}</span>
         <span>Booked: {bookedNumber}</span>
       </div>
 
@@ -290,7 +290,7 @@ function EventPublic({ eventId, setShowFeedbacks, showFeedbacks }) {
             See Feedbacks
           </button>
         )}
-        <button className="text-zinc-700" onClick={() => {navigate("/chat-group")}}>
+        <button className="text-zinc-700" onClick={() => {navigate(`/chat-group?eventId=${eventId}`)}}>
           Community
         </button>
       </div>

@@ -51,7 +51,7 @@ export const Profile = () => {
             <button
                 type="button"
                 id="dropdownToggle"
-                className="px-4 py-2 flex items-center rounded-full text-[#333] text-sm outline-none"
+                className="px-4 py-2 flex items-center rounded-full text-slate-400 text-sm outline-none"
                 onClick={handleToggleDropdown}
                
             >

@@ -31,7 +31,7 @@ function EventCard2({ setShowFeedbacks, event, handleEventId, loading, titleLimi
   return (
     <div
       id={event.eventId}
-      className="my-6 bg-white h-48 shadow-sm border border-slate-200 rounded-lg w-96 flex flex-col"
+      className="my-3 bg-white h-48 shadow-sm border border-slate-200 rounded-lg w-96 flex flex-col"
     >
       <div className="p-2 flex-grow">
         <h5 className="mb-1 text-slate-800 font-semibold bg-zinc-700/5 rounded-md">
