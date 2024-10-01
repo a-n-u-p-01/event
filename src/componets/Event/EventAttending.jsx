@@ -8,6 +8,7 @@ import { APP_URL } from "../util";
 
 function EventAttending({ ticket }) {
   const [isCanceled, setIsCanceled] = useState(ticket.cancelStatus);
+  const [showConfirmDialog, setShowConfirmDialog] = useState(false);
 
   const handleCancel = async () => {
     try {
@@ -20,7 +21,17 @@ function EventAttending({ ticket }) {
       setIsCanceled(true);
     } catch (err) {
       console.error(err);
+    } finally {
+      setShowConfirmDialog(false); // Close dialog after action
     }
+  };
+
+  const handleCancelClick = () => {
+    setShowConfirmDialog(true);
+  };
+
+  const handleCloseDialog = () => {
+    setShowConfirmDialog(false);
   };
 
   if (!ticket) {
@@ -63,12 +74,30 @@ function EventAttending({ ticket }) {
         </span>
         <button
           className={`text-sm ${isCanceled ? "text-gray-400" : "text-red-600"} font-semibold`}
-          onClick={isCanceled ? null : handleCancel}
+          onClick={isCanceled ? null : handleCancelClick}
         >
           {isCanceled ? "Canceled" : "Cancel Ticket"}
         </button>
       </div>
       <FeedBackForm disabled={status} eventId={event.eventId} />
+
+      {/* Confirmation Dialog */}
+      {showConfirmDialog && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white p-5 rounded-lg shadow-lg">
+            <h3 className="text-lg font-semibold mb-3">Confirm Cancellation</h3>
+            <p>Are you sure you want to cancel this ticket?</p>
+            <div className="mt-4 flex justify-end">
+              <button className="mr-2 text-gray-500" onClick={handleCloseDialog}>
+                Cancel
+              </button>
+              <button className="bg-red-600 text-white px-4 py-2 rounded" onClick={handleCancel}>
+                Confirm
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

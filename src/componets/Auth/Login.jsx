@@ -11,7 +11,8 @@ const Login = () => {
     password: "",
   });
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false); // Loading state
+  const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false); // State for showing/hiding password
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -31,7 +32,6 @@ const Login = () => {
       if (response.data?.token) {
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("userId", response.data.userId);
-        console.log(localStorage.getItem("userId"));
         localStorage.setItem("userName", response.data.userName);
         navigate("/dashboard");
       }
@@ -44,7 +44,6 @@ const Login = () => {
   };
 
   const handleGoogleLogin = () => {
-    // Redirect to backend OAuth2 Google login
     window.location.href = `${APP_URL}/oauth2/authorization/google`;
   };
 
@@ -69,7 +68,7 @@ const Login = () => {
 
         <form className="w-full" onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label htmlFor="email" classNa-me="block text-gray700">
+            <label htmlFor="email" className="block text-gray-700">
               Email
             </label>
             <input
@@ -85,14 +84,23 @@ const Login = () => {
             <label htmlFor="password" className="block text-gray-700">
               Password
             </label>
-            <input
-              type="password"
-              name="password"
-              onChange={handleChange}
-              placeholder="Your password"
-              className="w-full h-[40px] border border-gray-300 rounded-md px-2"
-              required
-            />
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                name="password"
+                onChange={handleChange}
+                placeholder="Your password"
+                className="w-full h-[40px] border border-gray-300 rounded-md px-2"
+                required
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500"
+              >
+                {showPassword ? "Hide" : "Show"}
+              </button>
+            </div>
           </div>
           <div className="mb-4">
             <button
@@ -115,7 +123,7 @@ const Login = () => {
 
         {/* Google OAuth Login */}
         <div className="mt-4">
-        <button
+          <button
             onClick={handleGoogleLogin}
             className="w-[33rem] h-[40px] gap-2 bg-zinc-700/5 text-black rounded-md hover:bg-gray-200 flex items-center justify-center"
           >

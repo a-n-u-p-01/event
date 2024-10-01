@@ -42,8 +42,8 @@ function ChatGroup() {
   };
 
   const onConnected = (name, client) => {
-    client.subscribe("/topic/public", onMessageReceived);
-    client.subscribe("/topic/users", onUsersReceived);
+    client.subscribe(`/topic/public/${eventId}`, onMessageReceived);
+    client.subscribe(`/topic/users/${eventId}`, onUsersReceived);
     setJoined(true);
 
     const joinMessage = {
@@ -51,7 +51,7 @@ function ChatGroup() {
       type: "JOIN",
       content: `${name} has joined the chat`,
     };
-    client.send("/app/chat.addUser", {}, JSON.stringify(joinMessage));
+    client.send(`/app/chat.addUser/${eventId}`, {}, JSON.stringify(joinMessage));
   };
 
   const onMessageReceived = (payload) => {
@@ -81,9 +81,11 @@ function ChatGroup() {
   };
 
   const fetchPastMessages = async () => {
-    const response = await axios(`${APP_URL}/chat/get-messages`);
-    const data = response.data;
+    const response = await axios(`${APP_URL}/chat/get-messages/${eventId}`);
+    const data = response.data; 
+    console.log(data)
     setMessages(data);
+    console.log(messages)
   };
 
   const joinGroup = () => {
@@ -101,7 +103,7 @@ function ChatGroup() {
         content: `${userName} has left the chat`,
       };
       stompClient.send(
-        "/app/chat.removeUser",
+        `/app/chat.removeUser/${eventId}`,
         {},
         JSON.stringify(leaveMessage)
       );
@@ -146,7 +148,7 @@ function ChatGroup() {
             onClick={leaveGroup}
             className="mt-1 bg-red-600 font-normal text-white text-sm p-2 rounded hover:bg-red-700 transition"
           >
-            Leave Chat
+            Leave Chat {eventId}
           </button>
         )}
         <div className="mt-4">
