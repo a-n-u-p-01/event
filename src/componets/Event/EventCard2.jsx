@@ -43,7 +43,9 @@ function EventCard2({ setShowFeedbacks, event, handleEventId, loading, titleLimi
         <p className="text-slate-600 leading-normal font-light text-sm">
           <span className="font-semibold">Description: </span>{truncatedDescription}
         </p>
+        <div className="flex justify-end font-normal">{event.category}</div>
       </div>
+     
       <div className="flex justify-between p-2">
         <span className="text-red-600">{!event.status && "Ended"}</span>
         <button

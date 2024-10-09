@@ -39,7 +39,7 @@ const navigate = useNavigate()
       <div className="bg-white h-full w-[50%] ">
         <img
           class="object-cover object-center w-full h-full"
-          src="https://wallpapercave.com/wp/wp7485440.jpg"
+          src="https://img.freepik.com/premium-photo/flat-vector-style-illustration-diverse-group-people-talking-collaborating-white-background-v-52-job-id-319e7e36d601491ca1dd6da21fa3a794_941097-82957.jpg?w=740"
           alt="nature image"
         />
       </div>

@@ -2,9 +2,9 @@ import React from "react";
 
 function Category({ category }) {
   return (
-    <div className="bg-gray-900/85 h-36 font-sans p-2 text-gray-400 grid place-content-center rounded-full text-lg w-36 transition-transform transform hover:scale-105 shadow-lg hover:shadow-xl">
+    <div className="bg-gradient-to-br from-gray-700 via-gray-800 to-gray-900 h-24 font-sans p-3 text-gray-300 grid place-content-center rounded-full text-md w-32 transition-transform transform hover:scale-110 shadow-lg hover:shadow-2xl hover:shadow-gray-600">
       <div className="flex flex-col items-center justify-center">
-        <span className="text-center">{category}</span>
+        <span className="text-center transition duration-300 transform hover:scale-110 text-gray-300">{category}</span>
       </div>
     </div>
   );

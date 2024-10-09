@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { APP_URL } from "../util";
-import { useNavigate } from "react-router-dom";
 import Success from "../assets/Success";
+import Update from "../assets/Updated";
 
 const categories = [
   "TRAVEL",
@@ -24,10 +24,9 @@ const categories = [
   "ENVIRONMENT"
 ];
 
-function HostEvent({ handleSetOption }) {
+function EventEdit({ handleSetOption, hostEventId, setIsEditing, setHostEventId }) {
   const [isCreated, setIsCreated] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
-  const navigate = useNavigate();
   const [event, setEvent] = useState({
     title: "",
     description: "",
@@ -35,14 +34,45 @@ function HostEvent({ handleSetOption }) {
     startTime: "",
     endTime: "",
     capacity: "",
-    category: "", // Add category to event state
+    category: "",
     ticketPricing: {
-      id: "",
       basicPrice: "",
       standardPrice: "",
       premiumPrice: "",
     },
   });
+  const [loading, setLoading] = useState(true);
+
+  // Fetch event data when the component mounts
+  useEffect(() => {
+    const fetchEventData = async () => {
+      try {
+        const response = await axios.get(`${APP_URL}/event/get-event/${hostEventId}`);
+        const data = response.data.event;
+
+        setEvent({
+          title: data.title || "",
+          description: data.description || "",
+          location: data.location || "",
+          startTime: data.startTime || "",
+          endTime: data.endTime || "",
+          capacity: data.capacity || "",
+          category: data.category || "",
+          ticketPricing: data.ticketPricing || {
+            basicPrice: "",
+            standardPrice: "",
+            premiumPrice: "",
+          },
+        });
+      } catch (error) {
+        console.error("Error fetching event data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchEventData();
+  }, [hostEventId]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -71,20 +101,11 @@ function HostEvent({ handleSetOption }) {
     e.preventDefault();
     setIsCreating(true);
     try {
-      if (event.title.length < 5) {
-        alert("Enter minimum 5 words for title.");
-        setIsCreating(false);
-        return;
-      }
+      // Log the event data before sending
+      console.log("Updated Event Data:", event);
 
-      if (event.description.length < 10) {
-        alert("Enter minimum 10 words for description.");
-        setIsCreating(false);
-        return;
-      }
-
-      const response = await axios.post(
-        `${APP_URL}/event/create-event`,
+      const response = await axios.put(
+        `${APP_URL}/event/update/${hostEventId}`,
         event,
         {
           headers: {
@@ -93,25 +114,12 @@ function HostEvent({ handleSetOption }) {
           },
         }
       );
-      setEvent({
-        title: "",
-        description: "",
-        location: "",
-        startTime: "",
-        endTime: "",
-        capacity: "",
-        category: "", // Reset category after submission
-        ticketPricing: {
-          id: "",
-          basicPrice: "",
-          standardPrice: "",
-          premiumPrice: "",
-        },
-      });
-
       handleCreated(true);
+      
+      setHostEventId(hostEventId)
+      setTimeout(()=>{setIsEditing(false)},500)
     } catch (error) {
-      console.error("Error creating event:", error);
+      console.error("Error updating event:", error);
     } finally {
       setIsCreating(false);
     }
@@ -119,15 +127,17 @@ function HostEvent({ handleSetOption }) {
 
   return (
     <div className="h-[50%] w-[80%]">
-      <form className="bg-white px-8 pt-6 pb-8 mb-4 text-gray-700 font-sans" onSubmit={handleSubmit}>
-        <h2 className="block font-sans text-3xl antialiased font-semibold leading-snug tracking-normal text-red-500">Create Event</h2>
+      <form className="bg-white px-8 pt-2 pb-8 mb-4 text-gray-700 font-sans" onSubmit={handleSubmit}>
+        <h2 className="block font-sans text-2xl antialiased font-semibold leading-snug tracking-normal text-red-500">Edit Event {hostEventId}</h2>
 
         {/* Form Fields */}
-        <div className="mb-4">
+        <div className="mb-1">
+            <label htmlFor="title" className="block text-gray-700 font-normal">Title</label>
           <input
             id="title"
             type="text"
             name="title"
+            value={event.title}
             onChange={handleChange}
             className="font-light shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             placeholder="Enter event title"
@@ -135,10 +145,12 @@ function HostEvent({ handleSetOption }) {
           />
         </div>
 
-        <div className="mb-4">
+        <div className="mb-1">
+        <label htmlFor="description" className="block text-gray-700 font-normal ">Description</label>
           <textarea
             id="description"
             name="description"
+            value={event.description}
             onChange={handleChange}
             className="shadow font-light appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             placeholder="Enter event description"
@@ -146,11 +158,13 @@ function HostEvent({ handleSetOption }) {
           />
         </div>
 
-        <div className="mb-4">
+        <div className="mb-1">
+        <label htmlFor="location" className="block text-gray-700 font-normal">Location</label>
           <input
             id="location"
             type="text"
             name="location"
+            value={event.location}
             onChange={handleChange}
             className="shadow font-light appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             placeholder="Enter event location"
@@ -158,33 +172,39 @@ function HostEvent({ handleSetOption }) {
           />
         </div>
 
-        <div className="mb-4">
+        <div className="mb-1">
+        <label htmlFor="startTime" className="block text-gray-700 font-normal">Start Time</label>
           <input
             id="startTime"
             type="datetime-local"
             name="startTime"
+            value={event.startTime}
             onChange={handleChange}
             className="shadow font-light appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             required
           />
         </div>
 
-        <div className="mb-4">
+        <div className="mb-1">
+        <label htmlFor="endTime" className="block text-gray-700 font-normal">End Time</label>
           <input
             id="endTime"
             type="datetime-local"
             name="endTime"
+            value={event.endTime}
             onChange={handleChange}
             className="shadow font-light appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             required
           />
         </div>
 
-        <div className="mb-4">
+        <div className="mb-1">
+        <label htmlFor="capacity" className="block text-gray-700 font-normal">Capacity</label>
           <input
             id="capacity"
             type="number"
             name="capacity"
+            value={event.capacity}
             onChange={handleChange}
             className="shadow font-light appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             placeholder="Enter event capacity"
@@ -192,11 +212,12 @@ function HostEvent({ handleSetOption }) {
           />
         </div>
 
-        <div className="mb-4">
-          <label htmlFor="category" className="block text-gray-700 font-normal mb-2">Select Category</label>
+        <div className="mb-1">
+          <label htmlFor="category" className="block text-gray-700 font-normal">Select Category</label>
           <select
             id="category"
             name="category"
+            value={event.category}
             onChange={handleChange}
             className="shadow font-light appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             required
@@ -217,6 +238,7 @@ function HostEvent({ handleSetOption }) {
                 id="basicPrice"
                 type="number"
                 name="basicPrice"
+                value={event.ticketPricing.basicPrice}
                 onChange={handleTicketChange}
                 className="shadow font-light appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 placeholder="Enter basic ticket price"
@@ -229,6 +251,7 @@ function HostEvent({ handleSetOption }) {
                 id="standardPrice"
                 type="number"
                 name="standardPrice"
+                value={event.ticketPricing.standardPrice}
                 onChange={handleTicketChange}
                 className="shadow font-light appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 placeholder="Enter standard ticket price"
@@ -241,6 +264,7 @@ function HostEvent({ handleSetOption }) {
                 id="premiumPrice"
                 type="number"
                 name="premiumPrice"
+                value={event.ticketPricing.premiumPrice}
                 onChange={handleTicketChange}
                 className="shadow font-light appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 placeholder="Enter premium ticket price"
@@ -256,13 +280,13 @@ function HostEvent({ handleSetOption }) {
             className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             disabled={isCreating}
           >
-            {isCreating ? "Creating..." : "Create Event"}
+            {isCreating ? "Updating..." : "Update"}
           </button>
         </div>
       </form>
-      {isCreated && <Success handleCreated={handleCreated} handleSetOption={handleSetOption} />}
+      {isCreated && <Update handleCreated={handleCreated} handleSetOption={handleSetOption} />}
     </div>
   );
 }
 
-export default HostEvent;
+export default EventEdit;

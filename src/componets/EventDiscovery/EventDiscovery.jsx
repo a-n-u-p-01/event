@@ -84,30 +84,29 @@ const EventDiscovery = () => {
 
 
 
-  //filter the query
-  useEffect(() => {
-    if (query) {
-      const searchWords = query.toLowerCase().trim().split(' ');
-      const isSingleNumber = searchWords.length === 1 && !isNaN(searchWords[0]);
-      
-      const filtered = events.filter(event => {
-        const titleMatch = searchWords.some(word => event.title.toLowerCase().includes(word));
-        const descriptionMatch = searchWords.some(word => event.description.toLowerCase().includes(word));
-        const matchesEventId = isSingleNumber && event.eventId.toString() === searchWords[0];
+  // Filter the query
+useEffect(() => {
+  if (query) {
+    const searchWords = query.toLowerCase().trim().split(' ');
+    const isSingleNumber = searchWords.length === 1 && !isNaN(searchWords[0]);
+    
+    const filtered = events.filter(event => {
+      const titleMatch = searchWords.some(word => event.title.toLowerCase().includes(word));
+      const descriptionMatch = searchWords.some(word => event.description.toLowerCase().includes(word));
+      const categoryMatch = searchWords.some(word => event.category.toLowerCase().includes(word));
+      const matchesEventId = isSingleNumber && event.eventId.toString() === searchWords[0];
+
+      return titleMatch || descriptionMatch || categoryMatch || matchesEventId;
+    });
+    setFilteredEvents(filtered);
+  } else {
+    setFilteredEvents(events);
+  }
+}, [query, events]);
+
   
-        return titleMatch || descriptionMatch || matchesEventId;
-      });
-      setFilteredEvents(filtered);
-    } else {
-      setFilteredEvents(events);
-    }
-  }, [query, events]);
-  
-
-
-
   return (
-    <div className=" h-64 md:h-[50rem] flex ml-0 md:ml-24 mt-16">
+    <div className=" h-64 md:h-[50rem] flex ml-0 md:ml-24 mt-20">
       <div className=" h-full w-full flex justify-center">
         <EventPublic eventId={eventId} setShowFeedbacks={setShowFeedbacks} showFeedbacks={showFeedbacks}/>
       </div>

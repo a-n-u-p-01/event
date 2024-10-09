@@ -6,12 +6,15 @@ import EventHosting from "../Event/EventHosting";
 import { APP_URL } from "../util";
 import EventCard3 from "../Event/EventCard3";
 import Attendees from "../User/Attendees";
+import { div } from "framer-motion/client";
+import EventEdit from "../Event/EventEdit";
 
 function HostingEvent() {
   const [events, setEvents] = useState([]);
   const [hostEventId, setHostEventId] = useState();
   const [showAttendees, setShowAttendees] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [isEditing,setIsEditing] = useState(false);
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -40,6 +43,10 @@ function HostingEvent() {
     fetchEvents();
   }, []);
 
+  if(isEditing){
+   return <EventEdit hostEventId={hostEventId} setIsEditing={setIsEditing} setHostEventId={setHostEventId}/>
+  }
+
   return (
     <div className="flex justify-between w-full h-screen">
       <motion.div
@@ -61,6 +68,7 @@ function HostingEvent() {
                 setHostEventId={setHostEventId}
                 setShowAttendees={setShowAttendees}
                 loading={loading}
+                setIsEditing={setIsEditing}
               />
             </motion.div>
           ))
